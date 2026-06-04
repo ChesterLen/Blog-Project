@@ -1,13 +1,18 @@
 import React from "react"
 import Logo from "../assets/Untitled design (68).png"
+import { NavLink } from "react-router-dom"
 
 export default function Header() {
+    const styles = {
+        borderBottom: "1px solid #e3e3e3"
+    }
+
     return (
         <header>
-            <img src={Logo} id="logo" alt="logo" />
+            <NavLink to="/"><img src={Logo} id="logo" alt="logo" /></NavLink>
             <nav>
                 <div className="nav-btn">Products</div>
-                <div className="nav-btn">About</div>
+                <NavLink to="about" className="nav-btn" style={({isActive}) => isActive ? styles : null}>About</NavLink>
                 <div className="nav-btn">Contacts</div>
             </nav>
         </header>
