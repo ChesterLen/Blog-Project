@@ -11,7 +11,7 @@ export default function Header() {
         <header>
             <NavLink to="/"><img src={Logo} id="logo" alt="logo" /></NavLink>
             <nav>
-                <div className="nav-btn">Products</div>
+                <NavLink to="publications" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Publications</NavLink>
                 <NavLink to="about" className="nav-btn" style={({isActive}) => isActive ? styles : null}>About</NavLink>
                 <div className="nav-btn">Contacts</div>
             </nav>

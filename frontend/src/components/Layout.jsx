@@ -18,7 +18,7 @@ export default function Layout() {
 
     return (
         <>
-            <div className="h-m-container">
+            <div className={location === "/" ? "h-m-container" : "p-m-container"}>
                 <Header />
                 <Main />
             </div>
