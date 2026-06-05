@@ -22,10 +22,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1em;
+    border-radius: 5px;
 }
 
 .inner-container {
-    width: 90%;
+    width: 100%;
     height: auto;
 
 }
