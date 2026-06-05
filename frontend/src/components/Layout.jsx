@@ -12,10 +12,10 @@ export default function Layout() {
         if (location === "/") {
             title.textContent = "Home"
         } else {
-            title.textContent = `${location.slice(1, 2).toUpperCase()}${location.slice(2, location.length)}`
+            title.textContent = (`${location.slice(1, 2).toUpperCase()}${location.slice(2, location.length)}`)
         }
     }, [location])
-    
+
     return (
         <>
             <div className="h-m-container">
