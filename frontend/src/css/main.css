@@ -1,5 +1,7 @@
 main {
+    min-height: 110vh;
     color: #e3e3e3;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }

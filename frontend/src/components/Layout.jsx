@@ -22,7 +22,7 @@ export default function Layout() {
                 <Header />
                 <Main />
             </div>
-            <Footer />
+            {window.location.pathname !== "/publications" && <Footer />}
         </>
     )
 }

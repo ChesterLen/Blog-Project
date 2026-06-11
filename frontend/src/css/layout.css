@@ -1,14 +1,13 @@
-#root {
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: auto 100px;
-}
-
 .h-m-container {
     background-image: url("../assets/ChatGPT\ Image\ Jun\ 4\,\ 2026\,\ 04_30_19\ PM.png");
     background-size: 100% 100%;
+    display: grid;
+    grid-template-rows: auto auto;
 }
 
-.h-m-container main {
-    min-height: 110vh;
+.p-m-container {
+    background-image: url("../assets/ChatGPT\ Image\ Jun\ 5\,\ 2026\,\ 12_16_22\ AM.png");
+    background-size: cover;
+    display: grid;
+    grid-template-rows: auto auto;
 }
