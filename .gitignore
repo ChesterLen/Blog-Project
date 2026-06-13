@@ -4,5 +4,6 @@ package.json
 
 docker-compose.yml
 Dockerfile
+.dockerignore
 
 nginx/
