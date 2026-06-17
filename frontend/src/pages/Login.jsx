@@ -8,7 +8,7 @@ export async function action({ request }) {
     const password = formData.get("password")
 
     console.log(email)
-    
+
     const res = await fetch("http://localhost:8000/api/login/", {
         method: "post",
         credentials: "include",
@@ -35,14 +35,17 @@ export async function action({ request }) {
 export default function Login() {
 
     return (
-        <Form method="post">
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" required />
+        <div className="login-container">
+            <h1>Login</h1>
+            <Form method="post">
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" id="email" required />
 
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" required />
+                <label htmlFor="password">Password</label>
+                <input type="password" name="password" id="password" required />
 
-            <button>Login</button>
-        </Form>
+                <button>Login</button>
+            </Form>
+        </div>
     )
 }

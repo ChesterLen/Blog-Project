@@ -49,9 +49,15 @@ export default function Register() {
     
     return (
         <div className="register-container">
+            <h1>Register</h1>
             <Form method="post">
+                <label htmlFor="email">Email:</label>
                 <input type="email" name="email" id="email" required />
+
+                <label htmlFor="password">Password:</label>
                 <input type="password" name="password1" id="password1" required />
+
+                <label htmlFor="password2">Repeat password:</label>
                 <input type="password" name="password2" id="password2" required />
                 <button>Register</button>
             </Form>
