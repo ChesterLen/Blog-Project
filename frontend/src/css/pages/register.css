@@ -1,7 +1,7 @@
 .register-container {
     width: 70%;
     height: 500px;
-    background-color: red;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,4 +13,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1em;
+}
+
+.register-container form input {
+    width: 100%;
+    outline: none;
 }
