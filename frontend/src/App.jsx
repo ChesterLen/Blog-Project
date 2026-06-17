@@ -4,6 +4,8 @@ import Layout from "./components/Layout"
 import Home from "./pages/Home"
 import Publications from "./pages/Publications"
 import Register, { action as registerAction } from "./pages/Register"
+import Login, { action as loginAction } from "./pages/Login"
+import Logout from "./pages/Logout"
 import Error from "./components/Error"
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -11,6 +13,8 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Home />} />
     <Route path="publications" element={<Publications />} />
     <Route path="register" element={<Register />} action={registerAction} errorElement={<Error />} />
+    <Route path="login" element={<Login />} action={loginAction} />
+    <Route path="logout" element={<Logout />} />
   </Route>
 ))
 

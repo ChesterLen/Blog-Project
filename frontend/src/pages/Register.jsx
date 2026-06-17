@@ -44,7 +44,7 @@ export async function action({ request }) {
     return data
 }
 
-export default function About() {
+export default function Register() {
     const actionData = useActionData()
     
     return (

@@ -1,6 +1,5 @@
 import React from "react"
 import CardImage from "../assets/Untitled design (59).png"
-import { useLocation } from "react-router-dom"
 
 export default function Home() {
     return (

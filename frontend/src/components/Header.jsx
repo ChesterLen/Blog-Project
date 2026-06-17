@@ -13,7 +13,8 @@ export default function Header() {
             <nav>
                 <NavLink to="publications" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Publications</NavLink>
                 <NavLink to="register" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Register</NavLink>
-                <div to="login" className="nav-btn">Login</div>
+                <NavLink to="login" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Login</NavLink>
+                <NavLink to="logout" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Logout</NavLink>
             </nav>
         </header>
     )
