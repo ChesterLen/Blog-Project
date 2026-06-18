@@ -43,6 +43,7 @@ export async function action({ request }) {
             return "Wrong credentials."
         }
         localStorage.setItem("isLoggedIn", "true")
+        localStorage.setItem("email", email)
         window.location.href = "/"
     } catch (err) {
         return err

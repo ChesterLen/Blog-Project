@@ -20,7 +20,7 @@ export default function Header() {
                     <div className="drp-d-m">
                         <i className="fa-solid fa-user-gear"></i>
                         <div className="drp-d-content">
-                            <NavLink className="drp-d-btn">profile</NavLink>
+                            <NavLink to="profile/details" className="drp-d-btn">profile</NavLink>
                             <NavLink className="drp-d-btn">settings</NavLink>
                             <NavLink to="logout" className="drp-d-btn">Logout</NavLink>
                         </div>
