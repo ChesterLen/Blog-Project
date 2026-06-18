@@ -7,13 +7,15 @@ export default function Header() {
         borderBottom: "1px solid #e3e3e3"
     }
 
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true"
+
     return (
         <header>
             <NavLink to="/"><img src={Logo} id="logo" alt="logo" /></NavLink>
             <nav>
                 <NavLink to="publications" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Publications</NavLink>
                 <NavLink to="register" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Register</NavLink>
-                <NavLink to="login" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Login</NavLink>
+                {!isLoggedIn && <NavLink to="login" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Login</NavLink>}
                 <NavLink to="logout" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Logout</NavLink>
             </nav>
         </header>

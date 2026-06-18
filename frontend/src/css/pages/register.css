@@ -35,9 +35,13 @@
 
 .register-container form button {
     font-family: Inter, sans-serif;
+    font-weight: bold;
     width: 100%;
+    height: 2.4em;
     padding: .5em;
-    margin-top: .5em;
+    margin-top: .7em;
+    border: none;
     border-radius: 5px;
+    background-color: #fff;
     cursor: pointer;
 }

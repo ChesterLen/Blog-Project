@@ -8,6 +8,7 @@ import Login, { action as loginAction } from "./pages/Login"
 import Logout from "./pages/Logout"
 import Error from "./components/Error"
 
+
 const router = createBrowserRouter(createRoutesFromElements(
   <Route element={<Layout />}>
     <Route path="/" element={<Home />} />

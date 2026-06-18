@@ -11,3 +11,11 @@
     display: grid;
     grid-template-rows: auto auto;
 }
+
+.error {
+    color: red;
+}
+
+.message {
+    color: rgb(22, 207, 22);
+}

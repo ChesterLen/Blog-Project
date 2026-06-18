@@ -9,7 +9,7 @@ export async function action({ request }) {
     const password2 = formData.get("password2")
 
     if (password1 !== password2) {
-        return {message: "Passwords don't match!"}
+        return "Passwords don't match!"
     }
 
     try {
@@ -20,7 +20,18 @@ export async function action({ request }) {
         throw new Error("An error occured")
     }
 
-    const res = await fetch("http://localhost:8000/api/register/", {
+    let user
+    const res = await fetch("http://localhost:8000/api/users/list")
+    const data = await res.json()
+
+    if (data.length > 0) {
+        user = data.find(u => u.email === email)
+        if (user) {
+            return "An account with this email address already exists!"
+        }
+    }
+
+    const res2 = await fetch("http://localhost:8000/api/register/", {
         method: "post",
         credentials: "include",
         headers: {
@@ -30,9 +41,6 @@ export async function action({ request }) {
         body: JSON.stringify({ email, password1, password2 })
     })
 
-    const data = await res.json()
-    console.log(data)
-
     if (!res.ok) {
         throw {
             message: "An error occured",
@@ -41,16 +49,17 @@ export async function action({ request }) {
         }
     }
 
-    return data
+    return "Account created. Check your email."
 }
 
 export default function Register() {
     const actionData = useActionData()
-    
+    console.log(actionData)
     return (
         <div className="register-container">
             <h1>Register</h1>
-            <Form method="post">
+            {actionData && <p className="message">{actionData}</p>}
+            <Form onSubmit={(e) => e.preventDefault} method="post">
                 <label htmlFor="email">Email:</label>
                 <input type="email" name="email" id="email" required />
 
