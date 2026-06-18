@@ -13,10 +13,19 @@ export default function Header() {
         <header>
             <NavLink to="/"><img src={Logo} id="logo" alt="logo" /></NavLink>
             <nav>
-                <NavLink to="publications" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Publications</NavLink>
-                <NavLink to="register" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Register</NavLink>
-                {!isLoggedIn && <NavLink to="login" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Login</NavLink>}
-                <NavLink to="logout" className="nav-btn" style={({isActive}) => isActive ? styles : null}>Logout</NavLink>
+                <NavLink to="publications" className="nav-btn" style={({ isActive }) => isActive ? styles : null}>Publications</NavLink>
+                {!isLoggedIn && <NavLink to="register" className="nav-btn" style={({ isActive }) => isActive ? styles : null}>Register</NavLink>}
+                {!isLoggedIn && <NavLink to="login" className="nav-btn" style={({ isActive }) => isActive ? styles : null}>Login</NavLink>}
+                {isLoggedIn &&
+                    <div className="drp-d-m">
+                        <i className="fa-solid fa-user-gear"></i>
+                        <div className="drp-d-content">
+                            <NavLink className="drp-d-btn">profile</NavLink>
+                            <NavLink className="drp-d-btn">settings</NavLink>
+                            <NavLink to="logout" className="drp-d-btn">Logout</NavLink>
+                        </div>
+                    </div>
+                }
             </nav>
         </header>
     )
