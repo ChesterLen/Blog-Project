@@ -1,0 +1,13 @@
+.back-btn {
+    color: #000;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, .5);
+    position: absolute;
+    top: 4px;
+    padding: .2em 1em;
+    border-radius: 3px;
+}
+
+.fa-angle-left {
+    color: #fff;
+}

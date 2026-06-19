@@ -18,3 +18,9 @@ export async function getPublications() {
     const data = await res.json()
     return data
 }
+
+export async function getPublication(id) {
+    const res = await fetch(`http://localhost:8000/api/publication/detail/${id}`)
+    const data = await res.json()
+    return data
+}

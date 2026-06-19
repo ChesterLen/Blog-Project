@@ -3,11 +3,13 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import Layout from "./components/Layout"
 import Home from "./pages/Home"
 import Publications from "./pages/Publications"
+import PublicationDetail, { loader as publicationDetailLoader } from "./pages/publication/PublicationDetail"
+import ProfilePublications, {loader as profilePublicationsLoader} from "./pages/publication/ProfilePublications"
 import Register, { action as registerAction } from "./pages/Register"
 import Login, { action as loginAction } from "./pages/Login"
 import Logout from "./pages/Logout"
 import Error from "./components/Error"
-import ProfileDetails, { action as publicationAction, loader as publicationLoader } from "./pages/profile/ProfileDetails"
+import ProfileDetails, { action as publicationAction } from "./pages/profile/ProfileDetails"
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -17,7 +19,10 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="register" element={<Register />} action={registerAction} errorElement={<Error />} />
     <Route path="login" element={<Login />} action={loginAction} />
     <Route path="logout" element={<Logout />} />
-    <Route path="profile/details" element={<ProfileDetails />} action={publicationAction} loader={publicationLoader} />
+    <Route path="profile/details" element={<ProfileDetails />} action={publicationAction}>
+      <Route index element={<ProfilePublications />} loader={profilePublicationsLoader} />
+      <Route path=":id" element={<PublicationDetail />} loader={publicationDetailLoader} />
+    </Route>
   </Route>
 ))
 

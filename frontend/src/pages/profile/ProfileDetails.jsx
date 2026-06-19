@@ -1,7 +1,7 @@
 import React from "react"
 import ImgUrl from "../../assets/ChatGPT Image May 23, 2026, 08_23_04 PM.png"
-import { Form, useLoaderData } from "react-router-dom"
-import Publication from "../publication/Publication"
+import { Form, useLoaderData, Outlet } from "react-router-dom"
+import Publication from "../../components/Publication"
 
 export async function action({ request }) {
     const formData = await request.formData()
@@ -10,6 +10,7 @@ export async function action({ request }) {
 
     const res = await fetch("http://localhost:8000/api/users/list")
     const data = await res.json()
+
     const email = localStorage.getItem("email")
     const user = data.find(u => u.email === email)
     const profile = user.userprofile
@@ -23,25 +24,11 @@ export async function action({ request }) {
     })
 
     const data2 = await res2.json()
-    console.log(data2)
-}
-
-export async function loader() {
-    const res = await fetch("http://localhost:8000/api/publication/list")
-    const data = await res.json()
-    return data
+    return data2
 }
 
 export default function Details() {
     const [postOnOf, setPostOnOf] = React.useState(false)
-    const loaderData = useLoaderData()
-    const [publications, setPublications] = React.useState(loaderData.reverse())
-    
-    React.useEffect(() => {
-        setPublications(prevPublications => loaderData.reverse())
-    }, [loaderData])
-
-    const renderPublications = publications.map(publication => <Publication key={publication.id} title={publication.title} text={publication.text} />)
 
     const publicationForm = <Form onSubmit={() => setPostOnOf(false)} method="post">
         <label htmlFor="title">Title</label>
@@ -71,8 +58,8 @@ export default function Details() {
                 <h1>Publications</h1>
                 <button onClick={() => setPostOnOf(prevPostOnOf => !prevPostOnOf)}>Post Publication</button>
                 {postOnOf && publicationForm}
-                <div className="publications">
-                    {publications && renderPublications}
+                <div className="profile-menu">
+                    {<Outlet />}
                 </div>
             </div>
         </div>

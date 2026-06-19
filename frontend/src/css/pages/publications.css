@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 1em;
     margin-top: 1em;
+    position: relative;
 }
 
 .publications-container h1 {
@@ -17,14 +18,18 @@
 .publications {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 3em;
 }
 
 .publication {
+    width: 70%;
     border: 1px solid #e3e3e3;
     padding: 1em;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.5);
+    color: #e3e3e3;
+    text-decoration: none;
 }
 
 .publication h2 {
