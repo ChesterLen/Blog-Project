@@ -44,6 +44,7 @@ export async function action({ request }) {
         }
         localStorage.setItem("isLoggedIn", "true")
         localStorage.setItem("email", email)
+        localStorage.setItem("profile", user.userprofile)
         window.location.href = "/"
     } catch (err) {
         return err

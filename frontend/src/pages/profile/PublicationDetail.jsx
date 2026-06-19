@@ -13,7 +13,7 @@ export default function PublicationDetail() {
     const data = useLoaderData()
     return (
         <div className="publication-detail-container">
-            <Link to=".." className="back-btn" title="go back"><i class="fa-solid fa-angle-left"></i></Link>
+            <Link to=".." className="back-btn" title="go back"><i className="fa-solid fa-angle-left"></i></Link>
             <div className="publication">
                 <h2>{data.title}</h2>
                 <p>{data.text}</p>

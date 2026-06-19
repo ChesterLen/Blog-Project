@@ -16,7 +16,10 @@ export default function ProfilePublications() {
         setPublications(prevPublications => loaderData.reverse())
     }, [loaderData])
 
-    const renderPublications = publications.map(publication => <Publication key={publication.id} id={publication.id} title={publication.title} text={publication.text} />)
+    const profile = localStorage.getItem("profile")
+    const filteredPublications = publications.filter(p => p.profile == profile)
+
+    const renderPublications = filteredPublications.map(publication => <Publication key={publication.id} id={publication.id} title={publication.title} text={publication.text} />)
     return (
         <div className="publications">
             {publications && renderPublications}
