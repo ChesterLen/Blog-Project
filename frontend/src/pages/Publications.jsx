@@ -2,7 +2,7 @@ import React from "react"
 
 export default function Publications() {
     return (
-        <div className="publications-container">
+        <div className="wall-publications-container">
             <h1>Publications</h1>
             <div className="outer-container">
                 <div className="inner-container">

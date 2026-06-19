@@ -1,10 +1,15 @@
 .profile-container {
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 1em;
 }
 
 .profile-details {
     border-bottom: 3px solid #000;
     display: flex;
+    align-items: center;
     gap: 1em;
     padding-bottom: 1em;
 }

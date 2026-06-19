@@ -7,7 +7,7 @@ import Register, { action as registerAction } from "./pages/Register"
 import Login, { action as loginAction } from "./pages/Login"
 import Logout from "./pages/Logout"
 import Error from "./components/Error"
-import Details from "./pages/profile/Details"
+import ProfileDetails, { action as publicationAction, loader as publicationLoader } from "./pages/profile/ProfileDetails"
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -17,7 +17,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="register" element={<Register />} action={registerAction} errorElement={<Error />} />
     <Route path="login" element={<Login />} action={loginAction} />
     <Route path="logout" element={<Logout />} />
-    <Route path="profile/details" element={<Details />} />
+    <Route path="profile/details" element={<ProfileDetails />} action={publicationAction} loader={publicationLoader} />
   </Route>
 ))
 

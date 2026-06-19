@@ -6,6 +6,7 @@
 @import "./footer.css";
 @import "./pages/home.css";
 @import "./pages/publications.css";
+@import "./pages/wall_publications.css";
 @import "./pages/register.css";
 @import "./pages/login.css";
 @import "./profile/profile_details.css";
