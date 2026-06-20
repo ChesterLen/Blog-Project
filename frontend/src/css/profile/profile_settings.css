@@ -42,3 +42,47 @@
     display: flex;
     justify-content: center
 }
+
+.profile-details form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.profile-details form .img-names {
+    width: 100%;
+    gap: 3em;
+}
+
+/* .profile-details form .img-names .profile-img {
+    margin-right: auto;
+} */
+
+.profile-details form .img-names .names {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-details form .img-names .names input {
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.profile-details form .status, .profile-details form .status textarea {
+    width: 100%;
+}
+
+.profile-details form button {
+    font-family: Inter, sans-serif;
+    font-weight: bold;
+    width: 10%;
+    height: 2em;
+    margin-right: auto;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}

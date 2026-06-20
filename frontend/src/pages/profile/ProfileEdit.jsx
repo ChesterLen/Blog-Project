@@ -57,11 +57,17 @@ export default function ProfileEdit() {
                             <input type="file" name="profile-img" id="profile-img"/>
                         </div>
                         <div className="names">
+                            <label htmlFor="first-name">First name:</label>
                             <input type="text" name="first-name" id="first-name" placeholder={firstName}/>
+
+                            <label htmlFor="last-name">Last name:</label>
                             <input type="text" name="last-name" id="last-name" placeholder={lastName}/>
                         </div>
                     </div>
-                    <textarea name="status" id="status" placeholder={loaderData.status} />
+                    <div className="status">
+                        <label htmlFor="status">Status:</label>
+                        <textarea name="status" id="status" placeholder={loaderData.status} />
+                    </div>
                     <button>Edit</button>
                 </Form>
             </div>
