@@ -3,6 +3,8 @@ import Logo from "../assets/Untitled design (68).png"
 import { NavLink } from "react-router-dom"
 
 export default function Header() {
+    const profileId = localStorage.getItem("profile")
+
     const styles = {
         borderBottom: "1px solid #e3e3e3"
     }
@@ -20,8 +22,8 @@ export default function Header() {
                     <div className="drp-d-m">
                         <i className="fa-solid fa-user-gear"></i>
                         <div className="drp-d-content">
-                            <NavLink to="profile/details" className="drp-d-btn">profile</NavLink>
-                            <NavLink className="drp-d-btn">settings</NavLink>
+                            <NavLink to={`profile/details/${profileId}`} className="drp-d-btn">profile</NavLink>
+                            <NavLink to={`profile/settings/${profileId}`} className="drp-d-btn">settings</NavLink>
                             <NavLink to="logout" className="drp-d-btn">Logout</NavLink>
                         </div>
                     </div>

@@ -27,8 +27,19 @@ export async function action({ request }) {
     return data2
 }
 
+export async function loader({ params }) {
+    const profileId = params.id
+    const res = await fetch(`http://localhost:8000/api/profile/${profileId}`)
+    const data = await res.json()
+    return data
+}
+
 export default function Details() {
     const [postOnOf, setPostOnOf] = React.useState(false)
+    const loaderData = useLoaderData()
+    const firstName = loaderData.first_name
+    const lastName = loaderData.last_name
+    const status = loaderData.status
 
     const publicationForm = <Form onSubmit={() => setPostOnOf(false)} method="post">
         <label htmlFor="title">Title</label>
@@ -48,17 +59,17 @@ export default function Details() {
                         <img src={ImgUrl} alt="" />
                     </div>
                     <div className="names">
-                        <h1>Chester</h1>
-                        <h1>Stifter</h1>
+                        {firstName ? <h1>{firstName}</h1> : <p>Not filled in...</p>}
+                        {lastName ? <h1>{lastName}</h1> : <p>Not filled in...</p>}
                     </div>
                 </div>
-                <p>dsadasdasdas</p>
+                {status ? <p>{status}</p> : <p>Not filled in...</p>}
             </div>
             <div className="publications-container">
                 <h1>Publications</h1>
                 <button onClick={() => setPostOnOf(prevPostOnOf => !prevPostOnOf)}>Post Publication</button>
                 {postOnOf && publicationForm}
-                <div className="profile-menu">
+                <div>
                     {<Outlet />}
                 </div>
             </div>
