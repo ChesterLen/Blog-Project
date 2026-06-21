@@ -46,6 +46,10 @@ export default function ProfileEdit() {
     const firstName = loaderData.first_name
     const lastName = loaderData.last_name
     const status = loaderData.status
+
+    const [firstNameState, setFirstNameState] = React.useState(firstName)
+    const [lastNameState, setLastNameState] = React.useState(lastName)
+    const [statusState, setStatusState] = React.useState(status)
     
     return (
         <div className="profile-container">
@@ -54,19 +58,19 @@ export default function ProfileEdit() {
                     <div className="img-names">
                         <div className="profile-img">
                             <img src={!newImg ? ImgUrl : newImg} alt="" />
-                            <input type="file" name="profile-img" id="profile-img"/>
+                            <input type="file" name="profile-img" id="profile-img" />
                         </div>
                         <div className="names">
                             <label htmlFor="first-name">First name:</label>
-                            <input type="text" name="first-name" id="first-name" placeholder={firstName}/>
+                            <input type="text" name="first-name" id="first-name" value={firstNameState} onChange={(e) => setFirstNameState(e.target.value)} />
 
                             <label htmlFor="last-name">Last name:</label>
-                            <input type="text" name="last-name" id="last-name" placeholder={lastName}/>
+                            <input type="text" name="last-name" id="last-name" value={lastNameState} onChange={(e) => setLastNameState(e.target.value)} />
                         </div>
                     </div>
                     <div className="status">
                         <label htmlFor="status">Status:</label>
-                        <textarea name="status" id="status" placeholder={loaderData.status} />
+                        <textarea name="status" id="status" value={statusState} onChange={(e) => setStatusState(e.target.value)} />
                     </div>
                     <button>Edit</button>
                 </Form>

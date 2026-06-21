@@ -56,10 +56,6 @@
     gap: 3em;
 }
 
-/* .profile-details form .img-names .profile-img {
-    margin-right: auto;
-} */
-
 .profile-details form .img-names .names {
     width: 100%;
     display: flex;
@@ -73,6 +69,7 @@
 
 .profile-details form .status, .profile-details form .status textarea {
     width: 100%;
+    height: 100%;
 }
 
 .profile-details form button {
@@ -81,6 +78,7 @@
     width: 10%;
     height: 2em;
     margin-right: auto;
+    margin-top: 1em;
     border: none;
     border-radius: 5px;
     background-color: #fff;

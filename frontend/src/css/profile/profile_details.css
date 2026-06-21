@@ -11,9 +11,8 @@
     width: 70%;
     border-bottom: 3px solid #000;
     display: flex;
-    align-items: center;
     gap: 1em;
-    padding-bottom: 1em;
+    padding-bottom: .5em;
 }
 
 .profile-img {
@@ -39,5 +38,32 @@
 .names {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: .5em;
+}
+
+.names input {
+    width: 100%;
+}
+
+.names p {
+    font-size: 20px;
+    margin-top: .5em;
+}
+
+#bubble-s-img {
+    width: 100%;
+    height: 300px;
+}
+
+#bubble-s-img {
+    position: relative;
+}
+
+.status-p {
+    position: absolute;
+    top: 200px;
+    right: 370px;
+    font-size: 25px;
+    width: 450px;
 }
