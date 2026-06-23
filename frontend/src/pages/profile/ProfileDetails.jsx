@@ -2,7 +2,6 @@ import React from "react"
 import defaultProfileImg from "../../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
 import BubbleStatusUrl from "../../assets/ChatGPT Image Jun 21, 2026, 10_56_45 AM (1) (1).png"
 import { Form, useLoaderData, Outlet } from "react-router-dom"
-import Publication from "../../components/Publication"
 
 export async function action({ request }) {
     const formData = await request.formData()
@@ -66,6 +65,7 @@ export default function Details() {
 
     return (
         <div className="profile-container">
+            {<p>{localStorage.getItem("email")}</p>}
             <div className="profile-details">
                 <div className="img-names">
                     <div className="profile-img">

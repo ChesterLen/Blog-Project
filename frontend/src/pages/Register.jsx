@@ -54,7 +54,7 @@ export async function action({ request }) {
 
 export default function Register() {
     const actionData = useActionData()
-    console.log(actionData)
+    
     return (
         <div className="register-container">
             <h1>Register</h1>

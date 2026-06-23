@@ -1,8 +1,7 @@
 import React from "react"
 import Header from "./Header"
-import Main from "./Main"
 import Footer from "./Footer"
-import { useLocation } from "react-router-dom"
+import { useLocation, Outlet } from "react-router-dom"
 
 export default function Layout() {
     const location = useLocation().pathname
@@ -20,7 +19,9 @@ export default function Layout() {
         <>
             <div className={location === "/" ? "h-m-container" : "p-m-container"}>
                 <Header />
-                <Main />
+                <main>
+                    <Outlet />
+                </main>
             </div>
             {window.location.pathname !== "/publications" && <Footer />}
         </>

@@ -16,11 +16,29 @@ export function getCookie() {
 export async function getPublications() {
     const res = await fetch("http://localhost:8000/api/publication/list")
     const data = await res.json()
-    return data
+    return data.reverse()
 }
 
 export async function getPublication(id) {
     const res = await fetch(`http://localhost:8000/api/publication/detail/${id}`)
+    const data = await res.json()
+    return data
+}
+
+export async function getProfiles() {
+    const res = await fetch("http://localhost:8000/api/profiles/list")
+    const data = await res.json()
+    return data
+}
+
+export async function getProfile(id) {
+    const res = await fetch(`http://localhost:8000/api/profile/${id}`)
+    const data = await res.json()
+    return data
+}
+
+export async function getLikes() {
+    const res = await fetch("http://localhost:8000/api/like")
     const data = await res.json()
     return data
 }

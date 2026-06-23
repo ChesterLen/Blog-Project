@@ -7,14 +7,6 @@ export async function action({ request }) {
     const email = formData.get("email")
     const password = formData.get("password")
 
-    try {
-        const resCookie = await fetch("http://localhost:8000/api/cookie/", {
-            credentials: "include"
-        })
-    } catch {
-        throw new Error("An error occured")
-    }
-
     const csrfToken = getCookie()
 
     try {
