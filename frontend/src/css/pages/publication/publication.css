@@ -72,11 +72,19 @@
 
 .engagement {
     display: flex;
+    align-items: center;
     gap: .5em;
     margin-top: .3em;
     margin-right: auto;
 }
 
+.engagement button {
+    background: none;
+    border: none;
+    font-size: 17px;
+    cursor: pointer;
+}
+
 .fa-thumbs-up {
-    color: #fff;
+    color: #5462ff;
 }
