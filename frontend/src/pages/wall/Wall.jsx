@@ -1,13 +1,24 @@
 import React from "react"
 import { useLoaderData } from "react-router-dom"
-import { getPublications, getProfiles, getLikes, getCookie, getProfile } from "../../utils"
+import { 
+    getPublications, 
+    getProfiles, 
+    getLikes, 
+    getCookie, 
+    getProfile, 
+    getLoggedInProfile 
+} from "../../utils"
 
 export async function loader() {
     const publications = await getPublications()
     const profiles = await getProfiles()
     const likes = await getLikes()
-    const profile = await getProfile(localStorage.getItem("profile"))
-    return { publications: publications, profiles: profiles, "likes": likes, profile: profile }
+    const profileLoggedIn = await getLoggedInProfile()
+    return { 
+        publications: publications, 
+        profiles: profiles, 
+        likes: likes, 
+        profileLoggedIn: profileLoggedIn }
 }
 
 export default function Publications() {
@@ -16,11 +27,14 @@ export default function Publications() {
     const [publications, setPublications] = React.useState(loaderData.publications)
     const [profiles, setProfiles] = React.useState(loaderData.profiles)
     const [likes, setLikes] = React.useState(loaderData.likes)
+    const [message, setMessage] = React.useState("")
 
-    const profile = loaderData.profile
+    const profileLoggedIn = loaderData.profileLoggedIn.profile_logged_in
 
+    console.log(likes.find(l => l.profile == profileLoggedIn))
     
     async function like(publicationId) {
+        const publication = publications.find(p => p.id === publicationId)
         const res = await fetch(`http://localhost:8000/api/publication/like/${publicationId}/`, {
             method: "post",
             credentials: "include",
@@ -28,27 +42,11 @@ export default function Publications() {
                 "Content-Type": "application/json",
                 "X-CSRFToken": getCookie()
             },
-            body: JSON.stringify({ publicationId: publicationId, profileId: profile.id })
+            body: JSON.stringify({ publicationId: publicationId, profileId: profileLoggedIn })
         })
 
         const data = await res.json()
-        console.log(data)
-
-        setLikes(await getLikes())
-        
-        setPublications(prevPublications =>
-            prevPublications.map(publication =>
-                publication.id === publicationId && !likes.find(l => l.profile === profile.id)
-                    ? {
-                        ...publication,
-                        likes: publication.likes + 1
-                    }
-                    : {
-                        ...publication,
-                        likes: publication.likes - 1
-                    }
-            )
-        );
+        return { data: data, publication: publication }
     }
 
     const renderPublications = publications.map(publication => <div key={publication.id} className="publication">
@@ -71,9 +69,34 @@ export default function Publications() {
         </div>
 
         <div className="engagement">
-            <button onClick={() => like(publication.id)}>Like</button>
+            <button onClick={async () => {
+                const likeF = await like(publication.id)
+                const publicationF = likeF.publication
+                const message = likeF.data.message || ""
+
+                setMessage(message)
+
+                if (!likeF.data.message) {
+                    setLikes(await getLikes())
+
+                    setPublications(prevPublications =>
+                        prevPublications.map(publication =>
+                            publication.id === publicationF.id && !likes.find(l => l.profile == profileLoggedIn)
+                                ? {
+                                    ...publication,
+                                    likes: publication.likes + 1
+                                }
+                                : {
+                                    ...publication,
+                                    likes: publication.likes - 1
+                                }
+                        )
+                    )
+                }
+            }}>Like</button>
             <p>Likes: {publication.likes}</p>
             <p>Comments: 0</p>
+            {message && <p>{message}</p>}
         </div>
     </div>
     )

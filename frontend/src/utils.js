@@ -37,6 +37,18 @@ export async function getProfile(id) {
     return data
 }
 
+export async function getLoggedInProfile() {
+    const res = await fetch("http://localhost:8000/api/profile/loggedin/", {
+        method: "post",
+        credentials: "include",
+        headers: {
+            "X-CSRFToken": getCookie()
+        }
+    })
+    const data = await res.json()
+    return data
+}
+
 export async function getLikes() {
     const res = await fetch("http://localhost:8000/api/like")
     const data = await res.json()

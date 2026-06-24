@@ -70,7 +70,7 @@ export default function ProfileEdit() {
                     </div>
                     <div className="status">
                         <label htmlFor="status">Status:</label>
-                        <textarea name="status" id="status" value={statusState} onChange={(e) => setStatusState(e.target.value)} />
+                        <textarea name="status" id="status" value={statusState || ""} onChange={(e) => setStatusState(e.target.value)} />
                     </div>
                     <button>Edit</button>
                 </Form>
