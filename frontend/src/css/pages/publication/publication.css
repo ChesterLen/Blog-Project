@@ -1,32 +1,37 @@
 .publication {
-    width: 70%;
+    width: 60%;
     border: 1px solid #e3e3e3;
-    padding: 1em;
     border-radius: 3px;
     color: #e3e3e3;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1em;
+    gap: .7em;
+    padding: 1em;
 }
 
 .profile {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 0;
+    align-items: center;
+    padding: .5em;
+    margin: .5em;
 }
 
 .profile-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: .5em;
+    border-bottom: 1px solid #ffffff;
+    border-radius: 10px;
 }
 
 .prf-img {
     width: 100px;
     height: 100px;
+    border: 3px solid #e3e3e3;
     border-radius: 50%;
 }
 
@@ -36,10 +41,25 @@
     border-radius: 50%;
 }
 
-.pub-img {
+.prf-img-no-border {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.prf-img-no-border img {
     width: 100%;
     height: 100%;
+    border-radius: 50%;
+}
+
+.pub-img {
+    width: 90%;
+    height: 90%;
     border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .pub-img img {
@@ -49,10 +69,11 @@
 }
 
 .pub-content {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: .3em;
 }
 
 .publication h2 {
@@ -71,11 +92,10 @@
 }
 
 .engagement {
+    width: 90%;
     display: flex;
     align-items: center;
     gap: .5em;
-    margin-top: .3em;
-    margin-right: auto;
 }
 
 .engagement button {
@@ -87,4 +107,9 @@
 
 .fa-thumbs-up {
     color: #5462ff;
+}
+
+#message {
+    color: red;
+    margin-right: auto;
 }

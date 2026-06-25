@@ -21,6 +21,7 @@ export  default function Publications() {
 
     const [publicationsState, setPublicationsState] = React.useState(publications)
     const [likesState, setLikesState] = React.useState(likes)
+    const [message, setMessage] = React.useState({})
 
     async function like(id) {
         const csrfToken = getCookie()
@@ -36,6 +37,13 @@ export  default function Publications() {
         })
 
         const data = await res.json()
+
+        if (profileLoggedIn.message) {
+            setMessage(data)
+            return
+        }
+
+        setLikesState(await getLikes())
 
         setPublicationsState(prevPublications => prevPublications.map(publication => {
             if (publication.id === id && !likesState.find(l => l.profile === profileLoggedIn.profile_logged_in)) {
@@ -57,6 +65,8 @@ export  default function Publications() {
             pubImg={publication.image}
             like={() => like(publication.id)}
             likes={publicationsState.find(p => p.id == publication.id).likes}
+            pLiked={likesState.find(l => l.profile == profileLoggedIn.profile_logged_in && publication.id === l.publication) ? true : false}
+            message={publication.id === message.publication_id ? message.message : null}
         />
     )
 
