@@ -72,8 +72,8 @@ export  default function Publications() {
 
     return (
         <div className="wall-publications-container">
-            <h1>Publications</h1>
             <div className="outer-container">
+                <h1>Publications</h1>
                 <div className="inner-container">
                     { renderPublications }
                 </div>
