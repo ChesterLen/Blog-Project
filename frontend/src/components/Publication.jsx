@@ -3,6 +3,14 @@ import { Form, Link } from "react-router-dom"
 
 export default function Publication(props) {
     const [commentFormOnOff, setCommentFormOnOff] = React.useState(false)
+    const profileLoggedIn = props.profileLoggedIn
+
+    const [message2, setMessage2] = React.useState("")
+    const [showMessage2, setShowMessage2] = React.useState(false)
+
+    React.useEffect(() => {
+        profileLoggedIn.message ? setMessage2("You need to be logged in") : ""
+    }, [profileLoggedIn])
 
     const commentForm = <div className="comment-form">
         <Form onSubmit={() => setCommentFormOnOff(false)} method="post">
@@ -57,9 +65,18 @@ export default function Publication(props) {
                     </button>
                     <p>Likes: {props.likes}</p>
                     <div>|</div>
-                    <button id="comment-btn" onClick={() => setCommentFormOnOff(true)}><i className="fa-solid fa-comment"></i></button>
+                    <button id="comment-btn" onClick={() => {
+                        if (profileLoggedIn.message) {
+                            setShowMessage2(true)
+                            setCommentFormOnOff(false)
+                        } else {
+                            setShowMessage2(false)
+                            setCommentFormOnOff(true)
+                        }
+                    }}><i className="fa-solid fa-comment"></i></button>
                     <p>Comments: {props.commentsCount}</p>
                     {props.message ? <p id="message">{props.message}</p> : null}
+                    {showMessage2 && !props.message ? <p id="message">{message2}</p> : null}
                 </div>
                 {commentFormOnOff && commentForm}
             </div>

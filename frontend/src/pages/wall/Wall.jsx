@@ -82,6 +82,7 @@ export  default function Publications() {
             key={publication.id}
             id={publication.id}
             profileImg={profiles.find(profile => profile.id == publication.profile).profile_image ? profiles.find(profile => profile.id == publication.profile).profile_image : defaultProfileImage}
+            profileLoggedIn={profileLoggedIn}
             firstName={profiles.find(profile => profile.id == publication.profile).first_name}
             title={publication.title}
             text={publication.text}

@@ -27,6 +27,10 @@ export default function PublicationDetail() {
     const [likesState, setLikesState] = React.useState(likes)
     const [message, setMessage] = React.useState({})
 
+    React.useEffect(() => {
+        profileLoggedIn.message ? setMessage(profileLoggedIn) : {}
+    }, [profileLoggedIn])
+
     async function like(id) {
         const csrfToken = getCookie()
 
@@ -63,6 +67,7 @@ export default function PublicationDetail() {
         key={publication.id}
         id={publication.id}
         profileImg={profiles.find(profile => profile.id == publication.profile).profile_image ? profiles.find(profile => profile.id == publication.profile).profile_image : defaultProfileImage}
+        profileLoggedIn={profileLoggedIn}
         firstName={profiles.find(profile => profile.id == publication.profile).first_name}
         title={publication.title}
         text={publication.text}
@@ -74,5 +79,9 @@ export default function PublicationDetail() {
         message={publication.id === message.publication_id ? message.message : null}
     />
 
-    return renderPublication
+    return (
+        <>
+            {renderPublication}
+        </>
+    )
 }
