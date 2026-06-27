@@ -1,7 +1,7 @@
 import React from "react"
 import Publication from "../../components/Publication"
 import { useLoaderData } from "react-router-dom"
-import { getPublications, getProfiles, getProfile, getLikes, getCookie, getLoggedInProfile } from "../../utils"
+import { getPublications, getProfiles, getProfile, getLikes, getCookie, getLoggedInProfile, getComments } from "../../utils"
 import defaultProfileImage from "../../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
 
 export async function loader() {
@@ -9,7 +9,29 @@ export async function loader() {
     const profiles = await getProfiles()
     const likes = await getLikes()
     const profileLoggedIn = await getLoggedInProfile()
-    return { publications: publications, profiles: profiles, likes: likes, profileLoggedIn: profileLoggedIn }
+    const comments = await getComments()
+    return { publications: publications, profiles: profiles, likes: likes, profileLoggedIn: profileLoggedIn, comments: comments }
+}
+
+export async function action({ request }) {
+    const formData = await request.formData()
+    const comment = formData.get("comment")
+    const publicationId = formData.get("publicationId")
+    const loggedInProfile = await getLoggedInProfile()
+    const loggedInProfileId = loggedInProfile.profile_logged_in
+
+    const res = await fetch("http://localhost:8000/api/comment/create/", {
+        method: "post",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie()
+        },
+        body: JSON.stringify({ comment: comment , publication: publicationId, profile_commented: loggedInProfileId })
+    })
+
+    const data = await res.json()
+    return data
 }
 
 export  default function Publications() {
@@ -18,6 +40,7 @@ export  default function Publications() {
     const profiles = loaderData.profiles
     const likes = loaderData.likes
     const profileLoggedIn = loaderData.profileLoggedIn
+    const comments = loaderData.comments
 
     const [publicationsState, setPublicationsState] = React.useState(publications)
     const [likesState, setLikesState] = React.useState(likes)
@@ -65,6 +88,7 @@ export  default function Publications() {
             pubImg={publication.image}
             like={() => like(publication.id)}
             likes={publicationsState.find(p => p.id == publication.id).likes}
+            commentsCount={comments.filter(c => c.publication === publication.id).length}
             pLiked={likesState.find(l => l.profile == profileLoggedIn.profile_logged_in && publication.id === l.publication) ? true : false}
             message={publication.id === message.publication_id ? message.message : null}
         />
