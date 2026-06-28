@@ -130,14 +130,14 @@ export default function PublicationDetail() {
                         </div>
                         <div className="comment-cmt">
                             <p className="cmt-txt">{comment}</p>
-                            {commentLikesCount > 0 ? <p className="cmt-likes">{commentLikesCount} <i className="fa-solid fa-thumbs-up"></i></p> : <p className="cmt-likes"></p>}
+                            <div className="cmt-engagement">
+                                <button className="cmt-like-btn" onClick={() => commentLike(c.id)}><i className="fa-solid fa-thumbs-up"></i></button>
+                                <button className="cmt-rpl"><i className="fa-solid fa-reply"></i></button>
+                                {commentLikesCount > 0 ? <p className="cmt-likes">{commentLikesCount} <i className="fa-solid fa-thumbs-up"></i></p> : <p className="cmt-likes"></p>}
+                            </div>
                         </div>
                     </div>
                     <i className="fa-solid fa-ellipsis"></i>
-                </div>
-                <div className="cmt-engagement">
-                    <button className="cmt-like-btn" onClick={() => commentLike(c.id)}><i className="fa-solid fa-thumbs-up"></i></button>
-                    <button className="cmt-rpl"><i className="fa-solid fa-reply"></i></button>
                 </div>
             </div>
         )

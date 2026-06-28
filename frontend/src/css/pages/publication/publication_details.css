@@ -236,6 +236,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: .2em;
+    margin-top: .3em;
 }
 
 .cmt-names {
@@ -249,14 +251,11 @@
 }
 
 .cmt-engagement {
-    width: 93.6%;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
-    gap: .5em;
-}
-
-.cmt-txt {
-    margin-left: 2.2em;
+    align-items: center;
+    gap: .3em;
 }
 
 .cmt-likes {
