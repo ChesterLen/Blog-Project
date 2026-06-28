@@ -1,7 +1,9 @@
 import React from "react"
-import { Form, Link } from "react-router-dom"
+import { Form, Link, useLocation } from "react-router-dom"
 
 export default function Publication(props) {
+    const location = useLocation()
+    const pathName = location.pathname
     const [commentFormOnOff, setCommentFormOnOff] = React.useState(false)
     const profileLoggedIn = props.profileLoggedIn
 
@@ -24,7 +26,7 @@ export default function Publication(props) {
     </div>
 
     return (
-        <div className="publication">
+        <div className={pathName.includes("detail") ? "publication-detail" : "publication"}>
             <div className="inner-p-container">
                 <div className="profile">
                     <div className="profile-content">
@@ -60,25 +62,28 @@ export default function Publication(props) {
                 }
 
                 <div className="engagement">
-                    <button onClick={props.like}>
-                        {props.pLiked ? <i className="fa-solid fa-thumbs-up" title="Dislike"></i> : <i className="fa-regular fa-thumbs-up" title="Like"></i>}
-                    </button>
-                    <p>Likes: {props.likes}</p>
-                    <div>|</div>
-                    <button id="comment-btn" onClick={() => {
-                        if (profileLoggedIn.message) {
-                            setShowMessage2(true)
-                            setCommentFormOnOff(false)
-                        } else {
-                            setShowMessage2(false)
-                            setCommentFormOnOff(true)
-                        }
-                    }}><i className="fa-solid fa-comment"></i></button>
-                    <p>Comments: {props.commentsCount}</p>
-                    {props.message ? <p id="message">{props.message}</p> : null}
-                    {showMessage2 && !props.message ? <p id="message">{message2}</p> : null}
+                    <div className="inner-engagement-container">
+                        <button onClick={props.like}>
+                            {props.pLiked ? <i className="fa-solid fa-thumbs-up" title="Dislike"></i> : <i className="fa-regular fa-thumbs-up" title="Like"></i>}
+                        </button>
+                        <p>Likes: {props.likes}</p>
+                        <div>|</div>
+                        <button id="comment-btn" onClick={() => {
+                            if (profileLoggedIn.message) {
+                                setShowMessage2(true)
+                                setCommentFormOnOff(false)
+                            } else {
+                                setShowMessage2(false)
+                                setCommentFormOnOff(true)
+                            }
+                        }}><i className="fa-solid fa-comment"></i></button>
+                        <p>Comments: {props.commentsCount}</p>
+                        {props.message ? <p id="message">{props.message}</p> : null}
+                        {showMessage2 && !props.message ? <p id="message">{message2}</p> : null}
+                    </div>
+                    {commentFormOnOff && commentForm}
+                    {props.comments}
                 </div>
-                {commentFormOnOff && commentForm}
             </div>
         </div>
     )

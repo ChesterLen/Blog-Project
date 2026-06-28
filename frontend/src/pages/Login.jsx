@@ -14,9 +14,13 @@ export async function action({ request }) {
         const data = await res.json()
         let user
         if (data.length > 0) {
-            user = data.find(u => u.email === email)
-            if (!user.is_active) {
-                return "Please activate your account first"
+            if (data.find(u => u.email === email)) {
+                user = data.find(u => u.email === email)
+                if (!user.is_active) {
+                    return "Please activate your account first"
+                }
+            } else {
+                return "Wrong credentials"
             }
         }
 
