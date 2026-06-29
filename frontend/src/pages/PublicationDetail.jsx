@@ -1,168 +1,210 @@
-import React from "react"
-import Publication from "../components/Publication"
-import { 
-    getPublications, 
-    getPublication, 
-    getProfiles, 
-    getProfile, 
-    getLikes, 
-    getCookie, 
-    getLoggedInProfile, 
-    getComments, 
-    getCommentLikes 
-} from "../utils"
-import { useLoaderData } from "react-router-dom"
-import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
+import React from "react";
+import Publication from "../components/Publication";
+import {
+  getPublications,
+  getPublication,
+  getProfiles,
+  getLikes,
+  getCookie,
+  getLoggedInProfile,
+  getComments,
+  getCommentLikes,
+} from "../utils";
+import { useLoaderData } from "react-router-dom";
+import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png";
 
 export async function loader({ params }) {
-    const publication = await getPublication(params.id)
-    const publications = await getPublications()
-    const profiles = await getProfiles()
-    const likes = await getLikes()
-    const profileLoggedIn = await getLoggedInProfile()
-    const comments = await getComments()
-    const commentLikes = await getCommentLikes()
-    return { 
-        publications: publications, 
-        publication: publication, 
-        profiles: profiles, 
-        likes: likes, 
-        profileLoggedIn: profileLoggedIn, 
-        comments: comments, 
-        commentLikes: commentLikes }
+  return {
+    publication: await getPublication(params.id),
+    publications: await getPublications(),
+    profiles: await getProfiles(),
+    likes: await getLikes(),
+    profileLoggedIn: await getLoggedInProfile(),
+    comments: await getComments(),
+    commentLikes: await getCommentLikes(),
+  };
 }
 
 export default function PublicationDetail() {
-    const loaderData = useLoaderData()
-    const publications = loaderData.publications
-    const publication = loaderData.publication
-    const profiles = loaderData.profiles
-    const likes = loaderData.likes
-    const profileLoggedIn = loaderData.profileLoggedIn
+  const {
+    publication,
+    publications,
+    profiles,
+    likes,
+    profileLoggedIn,
+    comments,
+    commentLikes,
+  } = useLoaderData();
 
-    const comments = loaderData.comments
-    const publicationComments = comments.filter(c => c.publication === publication.id)
-    const commentLikes = loaderData.commentLikes
+  const [publicationsState, setPublicationsState] = React.useState(publications);
+  const [likesState, setLikesState] = React.useState(likes);
+  const [commentsState, setCommentsState] = React.useState(comments);
+  const [commentLikesState, setCommentLikesState] = React.useState(commentLikes);
+  const [message, setMessage] = React.useState({});
 
-    const [publicationsState, setPublicationsState] = React.useState(publications)
-    const [likesState, setLikesState] = React.useState(likes)
+  React.useEffect(() => {
+    if (profileLoggedIn.message) setMessage(profileLoggedIn);
+  }, [profileLoggedIn]);
 
-    const [commentsState, setCommentsState] = React.useState(comments)
+  const publicationComments = commentsState.filter(
+    c => c.publication === publication.id
+  );
 
-    const [message, setMessage] = React.useState({})
+  async function like(id) {
+    const res = await fetch(`http://localhost:8000/api/publication/like/${id}/`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie(),
+      },
+      body: JSON.stringify({
+        publicationId: id,
+        profileId: profileLoggedIn.profile_logged_in,
+      }),
+    });
 
-    React.useEffect(() => {
-        profileLoggedIn.message ? setMessage(profileLoggedIn) : {}
-    }, [profileLoggedIn])
+    const data = await res.json();
 
-    async function like(id) {
-        const csrfToken = getCookie()
-
-        const res = await fetch(`http://localhost:8000/api/publication/like/${id}/`, {
-            method: "post",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-            },
-            body: JSON.stringify({ publicationId: id, profileId: profileLoggedIn.profile_logged_in })
-        })
-
-        const data = await res.json()
-
-        if (profileLoggedIn.message) {
-            setMessage(data)
-            return
-        }
-
-        setLikesState(await getLikes())
-
-        setPublicationsState(prevPublications => prevPublications.map(publication => {
-            if (publication.id === id && !likesState.find(l => l.profile === profileLoggedIn.profile_logged_in)) {
-                return { ...publication, likes: data.likes }
-            } else if (publication.id === id && likesState.find(l => l.profile === profileLoggedIn.profile_logged_in)) {
-                return { ...publication, likes: data.likes }
-            }
-            return publication
-        }))
+    if (profileLoggedIn.message) {
+      setMessage(data);
+      return;
     }
 
-    async function commentLike(id) {
-        const res = await fetch(`http://localhost:8000/api/comment/like/${id}/`, {
-            method: "post",
-            credentials: "include",
-            headers: {
-                "X-CSRFToken": getCookie(),
-            }
-        })
+    setLikesState(await getLikes());
 
-        const data = await res.json()
-        
-        setCommentsState(prevComments => prevComments.map(c => {
-            if (c.id === id && !commentsState.find(c => c.profile_commented === profileLoggedIn.profile_logged_in)) {
-                return {...c, likes: data.likes}
-            } else if (c.id === id && commentsState.find(c => c.id === id && data.profile_liker === profileLoggedIn.profile_logged_in)) {
-                return {...c, likes: data.likes}
-            }
+    setPublicationsState(prev =>
+      prev.map(pub => (pub.id === id ? { ...pub, likes: data.likes } : pub))
+    );
+  }
 
-            return c
-        }))
-    }
+  async function commentLike(id) {
+    const res = await fetch(`http://localhost:8000/api/comment/like/${id}/`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "X-CSRFToken": getCookie(),
+      },
+    });
 
-    const renderPublicationComments = publicationComments.map(c => {
-        const profileCommented = profiles.find(p => p.id === c.profile_commented)
-        const profileCommentedImage = profileCommented.profile_image
-        const profileCommentedFirstName = profileCommented.first_name
-        const profileCommentedLastName = profileCommented.last_name
-        const commentLikesCount = commentsState.find(l => l.id === c.id).likes
-        const comment = c.comment
-        
-        return (
-            <div className="comment-container" key={c.id}>
-                <div className="comment-and-edit">
-                    <div className="comment">
-                        <div className="comment-profile">
-                            <img src={profileCommentedImage ? profileCommentedImage : defaultProfileImage} className="prf-cmt-img" />
-                            <div className="cmt-names">
-                                <p className="prf-cmt-fn">{profileCommentedFirstName}</p>
-                                <p className="prf-cmt-ln">{profileCommentedLastName}</p>
-                            </div>
-                        </div>
-                        <div className="comment-cmt">
-                            <p className="cmt-txt">{comment}</p>
-                            <div className="cmt-engagement">
-                                <button className="cmt-like-btn" onClick={() => commentLike(c.id)}><i className="fa-solid fa-thumbs-up"></i></button>
-                                <button className="cmt-rpl"><i className="fa-solid fa-reply"></i></button>
-                                {commentLikesCount > 0 ? <p className="cmt-likes">{commentLikesCount} <i className="fa-solid fa-thumbs-up"></i></p> : <p className="cmt-likes"></p>}
-                            </div>
-                        </div>
-                    </div>
-                    <i className="fa-solid fa-ellipsis"></i>
-                </div>
-            </div>
-        )
-    })
+    const data = await res.json();
 
-    const renderPublication = <Publication
-        key={publication.id}
-        id={publication.id}
-        profileImg={profiles.find(profile => profile.id == publication.profile).profile_image ? profiles.find(profile => profile.id == publication.profile).profile_image : defaultProfileImage}
-        profileLoggedIn={profileLoggedIn}
-        firstName={profiles.find(profile => profile.id == publication.profile).first_name}
-        title={publication.title}
-        text={publication.text}
-        pubImg={publication.image}
-        like={() => like(publication.id)}
-        likes={publicationsState.find(p => p.id == publication.id).likes}
-        commentsCount={comments.filter(c => c.publication === publication.id).length}
-        pLiked={likesState.find(l => l.profile == profileLoggedIn.profile_logged_in && publication.id === l.publication) ? true : false}
-        message={publication.id === message.publication_id ? message.message : null}
-        comments={renderPublicationComments}
-    />
+    setCommentsState(prev =>
+      prev.map(c => (c.id === id ? { ...c, likes: data.likes } : c))
+    );
+
+    setCommentLikesState(prev => {
+      const liked = prev.some(
+        l =>
+          l.comment === id &&
+          l.profile_liker === Number(profileLoggedIn.profile_logged_in)
+      );
+
+      if (liked) {
+        return prev.filter(
+          l =>
+            !(
+              l.comment === id &&
+              l.profile_liker === Number(profileLoggedIn.profile_logged_in)
+            )
+        );
+      }
+
+      return [
+        ...prev,
+        {
+          id: data.id,
+          comment: data.comment,
+          profile_liker: data.profile_liker,
+        },
+      ];
+    });
+  }
+
+  const renderPublicationComments = publicationComments.map(comment => {
+    const profile = profiles.find(
+      p => p.id === comment.profile_commented
+    );
+
+    const likedByUser = commentLikesState.some(
+      l =>
+        l.comment === comment.id &&
+        l.profile_liker === Number(profileLoggedIn.profile_logged_in)
+    );
 
     return (
-        <>
-            {renderPublication}
-        </>
-    )
+      <div className="comment-container" key={comment.id}>
+        <div className="comment-and-edit">
+          <div className="comment">
+            <div className="comment-profile">
+              <img
+                src={profile?.profile_image || defaultProfileImage}
+                className="prf-cmt-img"
+              />
+              <div className="cmt-names">
+                <p className="prf-cmt-fn">{profile?.first_name}</p>
+                <p className="prf-cmt-ln">{profile?.last_name}</p>
+              </div>
+            </div>
+
+            <div className="comment-cmt">
+              <p className="cmt-txt">{comment.comment}</p>
+
+              <div className="cmt-engagement">
+                <button
+                  className="cmt-like-btn"
+                  onClick={() => commentLike(comment.id)}
+                >
+                  {likedByUser ? (
+                    <i className="fa-solid fa-thumbs-up"></i>
+                  ) : (
+                    <i className="fa-regular fa-thumbs-up"></i>
+                  )}
+                </button>
+
+                <button className="cmt-rpl">
+                  <i className="fa-solid fa-reply"></i>
+                </button>
+
+                {comment.likes > 0 && (
+                  <p className="cmt-likes">
+                    {comment.likes} <i className="fa-solid fa-thumbs-up"></i>
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <i className="fa-solid fa-ellipsis"></i>
+        </div>
+      </div>
+    );
+  });
+
+  const publicationProfile = profiles.find(
+    p => p.id == publication.profile
+  );
+
+  return (
+    <Publication
+      key={publication.id}
+      id={publication.id}
+      profileImg={publicationProfile?.profile_image || defaultProfileImage}
+      profileLoggedIn={profileLoggedIn}
+      firstName={publicationProfile?.first_name}
+      title={publication.title}
+      text={publication.text}
+      pubImg={publication.image}
+      like={() => like(publication.id)}
+      likes={publicationsState.find(p => p.id == publication.id)?.likes ?? 0}
+      commentsCount={publicationComments.length}
+      pLiked={likesState.some(
+        l =>
+          l.profile == profileLoggedIn.profile_logged_in &&
+          l.publication == publication.id
+      )}
+      message={publication.id === message.publication_id ? message.message : null}
+      comments={renderPublicationComments}
+    />
+  );
 }
