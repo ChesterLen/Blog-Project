@@ -10,7 +10,7 @@ import {
   getComments,
   getCommentLikes,
 } from "../utils";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Form } from "react-router-dom";
 import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png";
 
 export async function loader({ params }) {
@@ -41,6 +41,9 @@ export default function PublicationDetail() {
   const [commentsState, setCommentsState] = React.useState(comments);
   const [commentLikesState, setCommentLikesState] = React.useState(commentLikes);
   const [message, setMessage] = React.useState({});
+  const [replyFormOnOff, setReplyFormOnOff] = React.useState({})
+  const [cmtEditFormOnOff, setCmtEditFormOnOff] = React.useState({})
+  const [cmtEditMenuOnOff, setCmtEditMenuOnOff] = React.useState({})
 
   React.useEffect(() => {
     if (profileLoggedIn.message) setMessage(profileLoggedIn);
@@ -132,50 +135,69 @@ export default function PublicationDetail() {
         l.profile_liker === Number(profileLoggedIn.profile_logged_in)
     );
 
+    const replyForm = <Form className="reply-form" method="post" id={comment.id}>
+      <textarea type="text" name="reply" id="reply" required></textarea>
+      <button>Reply</button>
+      <div className="cancel-btn" onClick={() => setReplyFormOnOff(prev => ({...prev, [comment.id]: false}))}><i className="fa-solid fa-x" title="Cancel"></i></div>
+    </Form>
+
+    const commentMenu = <div className="cmt-menu">
+      <div className="menu-btn">Edit</div>
+      <div className="menu-btn">Delete</div>
+    </div>
+
+    const commentEditForm = <Form id={comment.id}>
+      <input type="text" name="comment-edit" id="comment-edit" value={commentsState.find(c => c.id === comment.id).comment} />
+      <button>Edit</button>
+    </Form>
+
     return (
-      <div className="comment-container" key={comment.id}>
+      <div className="comments-container" key={comment.id}>
         <div className="comment-and-edit">
           <div className="comment">
             <div className="comment-profile">
-              <img
-                src={profile?.profile_image || defaultProfileImage}
-                className="prf-cmt-img"
-              />
-              <div className="cmt-names">
-                <p className="prf-cmt-fn">{profile?.first_name}</p>
-                <p className="prf-cmt-ln">{profile?.last_name}</p>
+              <img src={profile?.profile_image || defaultProfileImage} className="prf-cmt-img" />
+              <div className="cmt-prf-inr-cntr">
+                <div className="cmt-names">
+                  <p className="prf-cmt-fn">{profile?.first_name}</p>
+                  <p className="prf-cmt-ln">{profile?.last_name}</p>
+                </div>
+
+                <div className="comment-cmt">
+                  <p className="cmt-txt">{comment.comment}</p>
+                </div>
               </div>
             </div>
-
-            <div className="comment-cmt">
-              <p className="cmt-txt">{comment.comment}</p>
-
-              <div className="cmt-engagement">
-                <button
-                  className="cmt-like-btn"
-                  onClick={() => commentLike(comment.id)}
-                >
-                  {likedByUser ? (
-                    <i className="fa-solid fa-thumbs-up"></i>
-                  ) : (
-                    <i className="fa-regular fa-thumbs-up"></i>
-                  )}
-                </button>
-
-                <button className="cmt-rpl">
-                  <i className="fa-solid fa-reply"></i>
-                </button>
-
-                {comment.likes > 0 && (
-                  <p className="cmt-likes">
-                    {comment.likes} <i className="fa-solid fa-thumbs-up"></i>
-                  </p>
+            <div className="cmt-engagement">
+              <button
+                className="cmt-like-btn"
+                onClick={() => commentLike(comment.id)}
+              >
+                {likedByUser ? (
+                  <i className="fa-solid fa-thumbs-up"></i>
+                ) : (
+                  <i className="fa-regular fa-thumbs-up"></i>
                 )}
-              </div>
+              </button>
+
+              <button className="cmt-rpl">
+                <i className="fa-solid fa-reply" onClick={() => {
+                  setReplyFormOnOff(prev => ({...prev, [comment.id]: true}))
+                }} title="Reply"></i>
+              </button>
+
+              {comment.likes > 0 && (
+                <p className="cmt-likes">
+                  {comment.likes} <i className="fa-solid fa-thumbs-up"></i>
+                </p>
+              )}
             </div>
           </div>
 
-          <i className="fa-solid fa-ellipsis"></i>
+          <div className="cmt-mng">
+            <i className="fa-solid fa-ellipsis" onClick={() => setCmtEditMenuOnOff(prev => ({...prev, [comment.id]: true}))}></i>
+            {cmtEditMenuOnOff[comment.id] && commentMenu}
+          </div>
         </div>
       </div>
     );

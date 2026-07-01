@@ -1,5 +1,6 @@
 import React from "react"
 import { Form, Link, useLocation } from "react-router-dom"
+import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png";
 
 export default function Publication(props) {
     const location = useLocation()
@@ -10,13 +11,15 @@ export default function Publication(props) {
     const [message2, setMessage2] = React.useState("")
     const [showMessage2, setShowMessage2] = React.useState(false)
 
+    const [replyFormOnOff, setReplyFormOnOff] = React.useState(false)
+
     React.useEffect(() => {
         profileLoggedIn.message ? setMessage2("You need to be logged in") : ""
     }, [profileLoggedIn])
 
     const commentForm = <div className="comment-form">
         <Form onSubmit={() => setCommentFormOnOff(false)} method="post">
-            <textarea type="text" name="comment" id="comment" cols="15"></textarea>
+            <textarea type="text" name="comment" id="comment"></textarea>
             <input type="hidden" name="publicationId" id="publicationId" value={props.id} />
             <div className="buttons">
                 <button>Comment</button>
@@ -26,7 +29,7 @@ export default function Publication(props) {
     </div>
 
     return (
-        <div className={pathName.includes("detail") ? "publication-detail" : "publication"}>
+        <div className="publication">
             <div className="inner-p-container">
                 <div className="profile">
                     <div className="profile-content">

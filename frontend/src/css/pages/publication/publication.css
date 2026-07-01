@@ -84,6 +84,23 @@
     border-bottom-right-radius: 0px;
 }
 
+.pub-img {
+    width: 100%;
+    height: auto;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pub-img img {
+    width: 100%;
+    height: 100%;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
 .pub-content {
     width: 100%;
     display: flex;
@@ -114,15 +131,15 @@
     flex-direction: column;
     gap: .5em;
     background-color: rgba(0, 0, 0, 0.3);
+    padding: 1em;
 }
 
 .inner-engagement-container {
     display: flex;
     gap: .5em;
-    padding: 1em;
 }
 
-.engagement button {
+.inner-engagement-container button {
     background: none;
     border: none;
     font-size: 17px;
@@ -137,50 +154,138 @@
     color: #fff;
 }
 
-.comment-form {
-    width: 70%;
-    margin-right: auto;
-}
-
 .comment-form form {
+    height: auto;
+    margin-left: auto;
     display: flex;
     flex-direction: column;
     gap: .5em;
 }
 
 .comment-form form textarea {
+    resize: none;
     field-sizing: content;
     outline: none;
     padding: .5em;
     border-radius: 10px;
-    resize: none;
 }
 
-.buttons {
+.comment-form form .buttons {
     display: flex;
-    justify-content: flex-end;
-    gap: .5em;
+    gap: .3em;
+    margin-left: auto;
 }
 
-.comment-form form button {
+.comment-form form .buttons button:first-child {
     font-family: Inter, sans-serif;
-    font-size: 15px;
     font-weight: bold;
-    padding: .1em;
-    background-color: #fff;
-    border: none;
     border-radius: 5px;
-    cursor: pointer;
+    padding: .2em;
 }
 
 .cancel-btn {
     color: red;
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
+}
+
+.cancel-btn i {
+    padding-top: .2em;
+}
+
+.comments-container {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+.comment {
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+}
+
+.comment-profile {
+    display: flex;
+    align-items: flex-start;
+    gap: .5em;
+}
+
+.comment .prf-cmt-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.cmt-prf-inr-cntr {
+    width: 100%;
+    color: #000;
+    background-color: #e3e3e3;
+    padding: .3em;
+    border-radius: 5px;
+}
+
+.comment-profile .cmt-names {
+    display: flex;
+    gap: .2em;
+}
+
+.cmt-engagement {
+    width: 100%;
+    display: flex;
+    gap: .3em;
+}
+
+.cmt-engagement button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.cmt-likes {
+    margin-left: auto;
+    font-size: 13px;
+}
+
+.comment-and-edit {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
+
+.fa-ellipsis {
+    padding-bottom: 1em;
+    cursor: pointer;
+}
+
+.fa-reply {
+    color: #5462ff;
+}
+
+.reply-form {
+    width: 35%;
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
+
+.reply-form textarea {
+    width: 100%;
+    resize: none;
+    field-sizing: content;
+    outline: none;
+    padding: .5em;
+    border-radius: 5px;
+}
+
+.reply-form button {
+    font-family: Inter, sans-serif;
+    font-weight: bold;
+    padding: .5em;
+    border-radius: 5px;
 }
 
 #message {
