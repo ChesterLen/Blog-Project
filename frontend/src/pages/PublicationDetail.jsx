@@ -25,6 +25,40 @@ export async function loader({ params }) {
   };
 }
 
+export async function action({ request }) {
+  const formData = await request.formData()
+  const commentEdit = formData.get("comment-edit")
+  const commentId = formData.get("id")
+
+  const comment = formData.get("comment")
+  const publicationId = formData.get("publicationId")
+  const profileLoggedIn = await getLoggedInProfile()
+
+  if (publicationId && comment) {
+    const res = await fetch("http://localhost:8000/api/comment/create/", {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie(),
+      },
+      body: JSON.stringify({ publication: publicationId, comment: comment, profile_commented: profileLoggedIn.profile_logged_in })
+    })
+  }
+
+  if (commentEdit && commentId) {
+    const res = await fetch(`http://localhost:8000/api/comment/edit/${commentId}/`, {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie()
+      },
+      body: JSON.stringify({ commentId, commentEdit })
+    })
+  }
+}
+
 export default function PublicationDetail() {
   const {
     publication,
@@ -41,6 +75,11 @@ export default function PublicationDetail() {
   const [commentsState, setCommentsState] = React.useState(comments);
   const [commentLikesState, setCommentLikesState] = React.useState(commentLikes);
   const [message, setMessage] = React.useState({});
+
+  React.useEffect(() => {
+    setCommentsState(comments)
+  }, [comments])
+  
   const [replyFormOnOff, setReplyFormOnOff] = React.useState({})
   const [cmtEditFormOnOff, setCmtEditFormOnOff] = React.useState({})
   const [cmtEditMenuOnOff, setCmtEditMenuOnOff] = React.useState({})
@@ -142,12 +181,22 @@ export default function PublicationDetail() {
     </Form>
 
     const commentMenu = <div className="cmt-menu">
-      <div className="menu-btn">Edit</div>
-      <div className="menu-btn">Delete</div>
+      <button className="menu-btn" onClick={() => setCmtEditFormOnOff(prev => ({...prev, [comment.id]: true}))}>Edit</button>
+      <button className="menu-btn" onClick={() => {
+        const res = fetch(`http://localhost:8000/api/comment/delete/${comment.id}/`, {
+          method: "post",
+          credentials: "include",
+          headers: {
+            "X-CSRFToken": getCookie(),
+          },
+        })
+        setCommentsState(prev => prev.filter(com => com.id !== comment.id))
+      }}>Delete</button>
     </div>
 
-    const commentEditForm = <Form id={comment.id}>
-      <input type="text" name="comment-edit" id="comment-edit" value={commentsState.find(c => c.id === comment.id).comment} />
+    const commentEditForm = <Form onSubmit={() => setCmtEditFormOnOff(prev => ({...prev, [comment.id]: false}))} method="post">
+      <input type="text" name="comment-edit" id="comment-edit" defaultValue={comment.comment} onChange={(e) => setCommentsState(prev => prev.map(com => com.id === comment.id ? {...com, comment: e.target.value} : com))} />
+      <input type="hidden" name="id" id="id" value={comment.id} />
       <button>Edit</button>
     </Form>
 
@@ -157,17 +206,20 @@ export default function PublicationDetail() {
           <div className="comment">
             <div className="comment-profile">
               <img src={profile?.profile_image || defaultProfileImage} className="prf-cmt-img" />
+
               <div className="cmt-prf-inr-cntr">
+                
                 <div className="cmt-names">
                   <p className="prf-cmt-fn">{profile?.first_name}</p>
                   <p className="prf-cmt-ln">{profile?.last_name}</p>
                 </div>
 
                 <div className="comment-cmt">
-                  <p className="cmt-txt">{comment.comment}</p>
+                  {cmtEditFormOnOff[comment.id] ? commentEditForm : <p className="cmt-txt">{comment.comment}</p>}
                 </div>
               </div>
             </div>
+            
             <div className="cmt-engagement">
               <button
                 className="cmt-like-btn"
@@ -195,10 +247,11 @@ export default function PublicationDetail() {
           </div>
 
           <div className="cmt-mng">
-            <i className="fa-solid fa-ellipsis" onClick={() => setCmtEditMenuOnOff(prev => ({...prev, [comment.id]: true}))}></i>
+            <i className="fa-solid fa-ellipsis" onClick={() => setCmtEditMenuOnOff(prev => ({...prev, [comment.id]: !prev[comment.id]}))}></i>
             {cmtEditMenuOnOff[comment.id] && commentMenu}
           </div>
         </div>
+        {replyFormOnOff[comment.id] && replyForm}
       </div>
     );
   });

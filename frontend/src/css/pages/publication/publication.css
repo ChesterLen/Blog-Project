@@ -259,6 +259,19 @@
 .fa-ellipsis {
     padding-bottom: 1em;
     cursor: pointer;
+    position: relative;
+}
+
+.cmt-menu {
+    position: absolute;
+    margin-top: -15px;
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+}
+
+.cmt-menu button:hover {
+    cursor: pointer;
 }
 
 .fa-reply {

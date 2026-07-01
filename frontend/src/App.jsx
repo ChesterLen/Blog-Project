@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import Layout from "./components/Layout"
 import Home from "./pages/Home"
 import Wall, { loader as wallLoader, action as wallAction } from "./pages/wall/Wall"
-import PublicationDetail, { loader as publicationDetailLoader } from "./pages/PublicationDetail"
+import PublicationDetail, { loader as publicationDetailLoader, action as publicationDetailAction } from "./pages/PublicationDetail"
 import Register, { action as registerAction } from "./pages/Register"
 import Login, { action as loginAction } from "./pages/Login"
 import Logout from "./pages/Logout"
@@ -18,7 +18,7 @@ const router = createBrowserRouter(createRoutesFromElements(
   <Route id="layout" element={<Layout />}>
     <Route path="/" element={<Home />} />
     <Route path="publications" element={<Wall />} loader={wallLoader} action={wallAction} />
-    <Route path="publications/detail/:id" element={<PublicationDetail />} loader={publicationDetailLoader} />
+    <Route path="publications/detail/:id" element={<PublicationDetail />} loader={publicationDetailLoader} action={publicationDetailAction} />
     <Route path="register" element={<Register />} action={registerAction} errorElement={<Error />} />
     <Route path="login" element={<Login />} action={loginAction} />
     <Route path="logout" element={<Logout />} />
