@@ -202,6 +202,16 @@
     gap: .5em;
 }
 
+.comments-container-r {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    padding: .3em;
+    border-radius: 5px;
+    background-color: rgba(228, 228, 228, .1);
+}
+
 .comment {
     display: flex;
     flex-direction: column;
@@ -210,7 +220,7 @@
 
 .comment-profile {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: .5em;
 }
 
@@ -218,6 +228,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    margin-bottom: 1em;
 }
 
 .cmt-prf-inr-cntr {
@@ -257,14 +268,12 @@
 }
 
 .fa-ellipsis {
-    padding-bottom: 1em;
     cursor: pointer;
     position: relative;
 }
 
 .cmt-menu {
     position: absolute;
-    margin-top: -15px;
     display: flex;
     flex-direction: column;
     gap: .2em;

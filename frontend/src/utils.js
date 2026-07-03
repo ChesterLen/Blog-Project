@@ -62,3 +62,9 @@ export async function getCommentLikes() {
     const data = await res.json()
     return data
 }
+
+export async function getReplies() {
+    const res = await fetch("http://localhost:8000/api/comment/reply/list")
+    const data = await res.json()
+    return data
+}

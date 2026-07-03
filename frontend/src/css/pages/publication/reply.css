@@ -1,0 +1,43 @@
+.reply {
+    margin-left: 3em;
+    display: flex;
+    align-items: center;
+}
+
+.reply-profile {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
+
+.reply-profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-bottom: 1em;
+}
+
+.rpl-prf-inr-cntr {
+    width: 100%;
+    color: #000;
+    background-color: #e3e3e3;
+    padding: .3em;
+    border-radius: 5px;
+}
+
+.rpl-names {
+    display: flex;
+    gap: .2em;
+}
+
+.reply-profile .fa-ellipsis {
+    cursor: pointer;
+    position: relative;
+}
+
+.rpl-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+}
