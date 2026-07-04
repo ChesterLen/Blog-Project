@@ -9,7 +9,8 @@ import {
   getLoggedInProfile,
   getComments,
   getCommentLikes,
-  getReplies
+  getReplies,
+  getNotifications
 } from "../utils";
 import { useLoaderData, Form, useActionData } from "react-router-dom";
 import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png";
@@ -23,7 +24,8 @@ export async function loader({ params }) {
     profileLoggedIn: await getLoggedInProfile(),
     comments: await getComments(),
     commentLikes: await getCommentLikes(),
-    replies: await getReplies()
+    replies: await getReplies(),
+    notifications: await getNotifications()
   };
 }
 
@@ -114,6 +116,7 @@ export default function PublicationDetail() {
     comments,
     commentLikes,
     replies,
+    notifications
   } = useLoaderData();
 
   const actionData = useActionData()
@@ -148,6 +151,8 @@ export default function PublicationDetail() {
   const [replyFormOnOff, setReplyFormOnOff] = React.useState({})
   const [replyEditFormOnOff, setReplyEditFormOnOff] = React.useState({})
   const [replyMenuOnOff, setReplyMenuOnOff] = React.useState({})
+
+  const [notificationsState, setNotificatonsState] = React.useState(notifications)
 
   React.useEffect(() => {
     if (profileLoggedIn.message) setMessage(profileLoggedIn);
@@ -196,6 +201,17 @@ export default function PublicationDetail() {
 
     const data = await res.json();
 
+    const res2 = await fetch("http://localhost:8000/api/notifications")
+    const data2 = await res2.json()
+    console.log(data2)
+    
+    const commentLiked = data2.find(obj => obj.comment_liked_notification === data.comment) || null
+    console.log(commentLiked)
+
+    setNotificatonsState(prev => notificationsState.find(n => n.comment_liked_notification === data.comment) ? prev.filter(n => n.comment_liked_notification !== data.comment) : [...notificationsState, commentLiked])
+
+    console.log(notificationsState.length)
+
     setCommentsState(prev =>
       prev.map(c => (c.id === id ? { ...c, likes: data.likes } : c))
     );
@@ -227,6 +243,9 @@ export default function PublicationDetail() {
       ];
     });
   }
+
+  console.log(notificationsState)
+  console.log(notificationsState.length)
 
   const renderPublicationComments = publicationComments.map(comment => {
     const profile = profiles.find(
@@ -272,7 +291,6 @@ export default function PublicationDetail() {
       <div className="cancel-btn" onClick={() => setReplyFormOnOff(prev => ({ ...prev, [comment.id]: false }))}><i className="fa-solid fa-x" title="Cancel"></i></div>
     </Form>
 
-
     const renderReplies = commentReplies.map(reply => {
       const profileReplied = profiles.find(p => p.id === reply.user_replied)
 
@@ -284,7 +302,22 @@ export default function PublicationDetail() {
 
       const replyEditMenu = <div className="rpl-menu">
         <button onClick={() => setReplyEditFormOnOff(prev => ({...prev, [reply.id]: true}))}>Edit</button>
-        <button>Delete</button>
+        <button onClick={async () => {
+          const res = await fetch(`http://localhost:8000/api/comment/reply/delete/${reply.id}/`, {
+            method: "post",
+            credentials: "include",
+            headers: {
+              "X-CSRFToken": getCookie(),
+            }
+          })
+
+          if (res.ok) {
+            setRepliesState(prev => prev.filter(r => r.id !== reply.id))
+          }
+
+          const data = await res.json()
+          console.log(data)
+        }}>Delete</button>
       </div>
       
       return (
@@ -297,7 +330,7 @@ export default function PublicationDetail() {
                 <p className="prf-rpl-ln">{profileReplied?.last_name}</p>
               </div>
               <div className="reply-rpl">
-                {replyEditFormOnOff[reply.id] ? replyEditForm : <p className="rpl-txt">{reply.reply}</p>}
+                {replyEditFormOnOff[reply.id] ? replyEditForm : <p className="rpl-txt">@{`${profile.first_name} ${profile.last_name}`} {reply.reply}</p>}
               </div>
             </div>
 
@@ -310,11 +343,14 @@ export default function PublicationDetail() {
       )
     })
 
+    console.log(profileLoggedIn)
+
     return (
       <div className={commentReplies.length ? "comments-container-r" : "comments-container"} key={comment.id}>
         <div className="comment-and-edit">
           <div className="comment">
             <div className="comment-profile">
+              {notificationsState.length > 0 && profile.id === Number(profileLoggedIn.profile_logged_in) ? <p>{notificationsState.length}</p> : null}
               <img src={profile?.profile_image || defaultProfileImage} className="prf-cmt-img" />
 
               <div className="cmt-prf-inr-cntr">

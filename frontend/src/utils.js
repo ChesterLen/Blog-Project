@@ -68,3 +68,9 @@ export async function getReplies() {
     const data = await res.json()
     return data
 }
+
+export async function getNotifications() {
+    const res = await fetch("http://localhost:8000/api/notifications")
+    const data = await res.json()
+    return data
+}
