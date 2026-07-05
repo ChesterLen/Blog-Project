@@ -44,33 +44,3 @@ export async function getLoggedInProfile() {
     const data = await res.json()
     return data
 }
-
-export async function getLikes() {
-    const res = await fetch("http://localhost:8000/api/like")
-    const data = await res.json()
-    return data
-}
-
-export async function getComments() {
-    const res = await fetch("http://localhost:8000/api/comment/list")
-    const data = await res.json()
-    return data
-}
-
-export async function getCommentLikes() {
-    const res = await fetch("http://localhost:8000/api/comment/likes")
-    const data = await res.json()
-    return data
-}
-
-export async function getReplies() {
-    const res = await fetch("http://localhost:8000/api/comment/reply/list")
-    const data = await res.json()
-    return data
-}
-
-export async function getNotifications() {
-    const res = await fetch("http://localhost:8000/api/notifications")
-    const data = await res.json()
-    return data
-}

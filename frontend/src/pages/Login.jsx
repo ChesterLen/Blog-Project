@@ -1,5 +1,5 @@
 import React from "react"
-import { data, Form, useActionData, useNavigate, useSearchParams } from "react-router-dom"
+import { data, Form, useActionData, useNavigate, useSearchParams } from "react-router"
 import { getCookie } from "../utils"
 
 export async function action({ request }) {

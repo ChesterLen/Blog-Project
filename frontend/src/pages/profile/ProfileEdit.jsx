@@ -1,6 +1,6 @@
 import React from "react"
 import ImgUrl from "../../assets/ChatGPT Image May 23, 2026, 08_23_04 PM.png"
-import { Form, useParams, useLoaderData } from "react-router-dom"
+import { Form, useParams, useLoaderData } from "react-router"
 import { getCookie } from "../../utils"
 
 export async function loader({ params }) {

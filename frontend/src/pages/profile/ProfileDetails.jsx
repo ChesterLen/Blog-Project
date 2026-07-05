@@ -1,7 +1,7 @@
 import React from "react"
 import defaultProfileImg from "../../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
 import BubbleStatusUrl from "../../assets/ChatGPT Image Jun 21, 2026, 10_56_45 AM (1) (1).png"
-import { Form, useLoaderData, Outlet } from "react-router-dom"
+import { Form, useLoaderData, Outlet } from "react-router"
 
 export async function action({ request }) {
     const formData = await request.formData()

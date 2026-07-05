@@ -1,0 +1,16 @@
+.engagement-container {
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+    padding: .5em;
+    background-color: rgba(10, 10, 10, .5);
+}
+
+.engagement-icons {
+    display: flex;
+    gap: .5em;
+}
+
+.fa-thumbs-up, .fa-comment {
+    cursor: pointer;
+}
