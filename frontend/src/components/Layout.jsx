@@ -14,7 +14,6 @@ export default function Layout() {
     const title = document.getElementsByTagName("title")[0]
 
     const loaderData = useLoaderData()
-    console.log(loaderData)
 
     React.useEffect(() => {
         if (location === "/") {

@@ -19,16 +19,20 @@ export default function Publication(props) {
                 </div>
 
                 {pathName === "/publications" ?
-                    <Link to={`detail/${props.id}`}>
-                        <div className="pub-content">
-                            <h2>{props.title}</h2>
-                            <p>{props.text}</p>
-                        </div>
+                    <div className="inner-eng-container">
+                        <Link to={`detail/${props.id}`}>
+                            <div className="pub-content">
+                                <h2>{props.title}</h2>
+                                <p>{props.text}</p>
+                            </div>
 
-                        <div className="pub-img">
-                            <img src={props.pubImg} alt="Publication image" />
-                        </div>
-                    </Link> :
+                            <div className="pub-img">
+                                <img src={props.pubImg} alt="Publication image" />
+                            </div>
+
+                        </Link>
+                        {props.engagement}
+                    </div> :
                     <div className="pub-data">
                         <div className="pub-content">
                             <h2>{props.title}</h2>

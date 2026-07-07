@@ -44,3 +44,15 @@ export async function getLoggedInProfile() {
     const data = await res.json()
     return data
 }
+
+export async function getComments() {
+    const res = await fetch("http://localhost:8000/api/comment/list")
+    const data = await res.json()
+    return data
+}
+
+export async function getReplies() {
+    const res = await fetch("http://localhost:8000/api/comment/reply")
+    const data = await res.json()
+    return data
+}

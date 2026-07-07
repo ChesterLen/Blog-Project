@@ -2,7 +2,7 @@ import React from "react"
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from "react-router"
 import Layout, { loader as layoutLoader } from "./components/Layout"
 import Home from "./pages/Home"
-import Wall, { loader as wallLoader } from "./pages/wall/Wall"
+import Wall, { loader as wallLoader, action as wallAction } from "./pages/wall/Wall"
 import PublicationDetail, { loader as publicationDetailLoader, action as publicationDetailAction } from "./pages/PublicationDetail"
 import Register, { action as registerAction } from "./pages/Register"
 import Login, { action as loginAction } from "./pages/Login"
@@ -17,7 +17,7 @@ import AccountSettings from "./pages/profile/AccountSettings"
 const router = createBrowserRouter(createRoutesFromElements(
   <Route id="layout" element={<Layout />} loader={layoutLoader} >
     <Route path="/" element={<Home />} />
-    <Route path="publications" element={<Wall />} loader={wallLoader} />
+    <Route path="publications" element={<Wall />} loader={wallLoader} action={wallAction} />
     <Route path="publications/detail/:id" element={<PublicationDetail />} loader={publicationDetailLoader} action={publicationDetailAction} />
     <Route path="register" element={<Register />} action={registerAction} errorElement={<Error />} />
     <Route path="login" element={<Login />} action={loginAction} />

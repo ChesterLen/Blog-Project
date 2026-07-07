@@ -6,11 +6,62 @@
     background-color: rgba(10, 10, 10, .5);
 }
 
+.comment-form {
+    display: flex;
+    align-items: center;
+    gap: .3em;
+}
+
+.comment-form form {
+    display: flex;
+    gap: .3em;
+}
+
+.comment-form button {
+    cursor: pointer;
+}
+
+.cancel-btn {
+    color: red;
+    background: none;
+    border: none;
+    padding-top: .2em;
+}
+
 .engagement-icons {
     display: flex;
     gap: .5em;
 }
 
-.fa-thumbs-up, .fa-comment {
+.fa-thumbs-up, .fa-comment, .fa-reply {
     cursor: pointer;
+    color: #0866ff;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+.comment {
+    padding: .5em;
+    border: 1px solid #3f3f3f;
+    border-radius: 5px;
+    margin-top: .5em;
+}
+
+.cmt-engagement .comment-form {
+    margin-top: .3em;
+}
+
+.cmt-prf {
+    display: flex;
+    gap: .5em;
+}
+
+.cmt-prf-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
