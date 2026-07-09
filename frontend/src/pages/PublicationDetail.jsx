@@ -2,7 +2,7 @@ import React from "react"
 import Publication from "../components/publication/Publication"
 import Engagement from "../components/publication/Engagement"
 import Comment from "../components/publication/Comment"
-import { getPublication, getProfiles, getLoggedInProfile, getCookie, getComments, getReplies } from "../utils";
+import { getPublication, getProfiles, getLoggedInProfile, getCookie, getComments, getReplies, getLikes } from "../utils";
 import { useLoaderData, useActionData } from "react-router";
 import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
 
@@ -26,7 +26,6 @@ export async function action({ request }) {
   })
 
   const data = await res.json()
-  console.log(data)
   
   return null
 }
@@ -38,11 +37,12 @@ export async function loader({ params }) {
     profileLoggedIn: await getLoggedInProfile(),
     comments: await getComments(),
     replies: await getReplies(),
+    likes: await getLikes(),
   };
 }
 
 export default function PublicationDetail() {
-  const { publication, profiles, profileLoggedIn, comments, replies } = useLoaderData()
+  const { publication, profiles, profileLoggedIn, comments, replies, likes } = useLoaderData()
   const isLoggedIn = profileLoggedIn.profile_logged_in || null
 
   const [commentsState, setCommentsState] = React.useState(comments)
@@ -63,6 +63,7 @@ export default function PublicationDetail() {
         profile = {profile}
         profiles={profiles}
         replies={repliesState}
+        isLoggedIn={isLoggedIn}
       />
     )
   })
@@ -86,6 +87,8 @@ export default function PublicationDetail() {
           isLoggedIn={isLoggedIn}
           comments={renderComments}
           id={publication.id}
+          pubLikesCount={publication.likes}
+          likes={likes}
         />
       }
     />

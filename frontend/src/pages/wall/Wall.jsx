@@ -3,7 +3,7 @@ import Publication from "../../components/publication/Publication"
 import Engagement from "../../components/publication/Engagement"
 import Comment from "../../components/publication/Comment"
 import { useLoaderData } from "react-router"
-import { getPublications, getProfiles, getLoggedInProfile, getCookie, getComments, getReplies } from "../../utils"
+import { getPublications, getProfiles, getLoggedInProfile, getCookie, getComments, getReplies, getLikes } from "../../utils"
 import defaultProfileImage from "../../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
 
 export async function action({ request }) {
@@ -34,11 +34,12 @@ export async function loader() {
     const profileLoggedIn = await getLoggedInProfile()
     const comments = await getComments()
     const replies = await getReplies()
-    return { publications: publications, profiles: profiles, profileLoggedIn: profileLoggedIn, comments: comments, replies: replies }
+    const likes = await getLikes()
+    return { publications, profiles, profileLoggedIn, comments, replies, likes }
 }
 
 export default function Publications() {
-    const { publications, profiles, profileLoggedIn, comments, replies } = useLoaderData()
+    const { publications, profiles, profileLoggedIn, comments, replies, likes } = useLoaderData()
     const isLoggedIn = profileLoggedIn.profile_logged_in || null
 
     const [publicationsState, setPublicationsState] = React.useState(publications)
@@ -62,14 +63,8 @@ export default function Publications() {
                     <Engagement
                         id={publication.id}
                         isLoggedIn={isLoggedIn}
-                        // comments={
-                        //     <Comment
-                        //         profiles={profiles}
-                        //         id={publication.id}
-                        //         commentsState={commentsState}
-                        //         replies={repliesState}
-                        //     />
-                        // }
+                        likes={likes}
+                        pubLikesCount={publication.likes}
                     />
                 }
             />
@@ -80,7 +75,6 @@ export default function Publications() {
     return (
         <div className="wall-publications-container">
             <div className="outer-container">
-                <h1>Publications</h1>
                 <div className="inner-container">
                     {renderPublications}
                 </div>

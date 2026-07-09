@@ -5,12 +5,13 @@ import { Form } from "react-router"
 export default function Comment(props) {
     const [showReplyFormOnOff, setShowReplyFormOnOff] = React.useState({})
     const [message, setMessage] = React.useState("")
-    
+
     const id = props.id
     const comment = props.comment
     const profile = props.profile
     const profiles = props.profiles
     const replies = props.replies
+    const isLoggedIn = props.isLoggedIn
 
     const replyForm = <div className="comment-form">
         <Form onSubmit={() => setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: false }))} method="post">
@@ -34,12 +35,18 @@ export default function Comment(props) {
             <div className="cmt-engagement">
                 <div className="engagement-icons">
                     <i className="fa-regular fa-thumbs-up"></i>
-                    <i className="fa-solid fa-reply" title="Reply" onClick={() => setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: true }))}></i>
+                    <i className="fa-solid fa-reply" title="Reply" onClick={() => {
+                        if (!isLoggedIn) {
+                            setMessage("You need to be logged in")
+                            return
+                        }
+                        setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: true }))
+                    }}></i>
                 </div>
                 {showReplyFormOnOff[comment.id] && replyForm}
                 <div className="replies">
                     {
-                        replies.filter(reply => reply.parent === comment.id).map(reply => {
+                        replies ? replies.filter(reply => reply.parent === comment.id).map(reply => {
                             const rplProfile = props.profiles.find(profile => profile.id === reply.author)
                             return (
                                 <Comment
@@ -49,9 +56,11 @@ export default function Comment(props) {
                                     profile={rplProfile}
                                     profiles={profiles}
                                     replies={replies}
+                                    isLoggedIn={isLoggedIn}
                                 />
                             )
-                        })
+                        }) :
+                            null
                     }
                 </div>
             </div>
