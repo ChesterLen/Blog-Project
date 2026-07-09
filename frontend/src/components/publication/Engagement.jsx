@@ -1,6 +1,6 @@
 import React from "react"
 import { Form } from "react-router"
-import { getCookie, getLoggedInProfile, getLikes } from "../../utils"
+import { getCookie, getLoggedInProfile, like, getLikes } from "../../utils"
 
 export default function Engagement(props) {
     const [showCommentFormOnOff, setShowCommentFormOnOff] = React.useState(false)
@@ -19,31 +19,18 @@ export default function Engagement(props) {
         <button className="cancel-btn" onClick={() => setShowCommentFormOnOff(false)}><i className="fa-solid fa-x"></i></button>
     </div>
 
-    async function like() {
-        const res = await fetch("http://localhost:8000/api/like/", {
-            method: "post",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie()
-            },
-            body: JSON.stringify({id: props.id, "className": "Publication", "profileId": props.isLoggedIn})
-        })
-        const data = await res.json()
-        setpubLikesCount(data.likes)
-        setLikes(await getLikes())
-    }
-
     return (
         <div className="engagement-container">
             <div className="engagement-icons">
-                <i className={`${liked ? "fa-solid" : "fa-regular"} fa-thumbs-up`} onClick={() => {
+                <i className={`${liked ? "fa-solid" : "fa-regular"} fa-thumbs-up`} onClick={async () => {
                     if (!props.isLoggedIn) {
                         setMessage("You need to be logged in")
                         return
                     }
 
-                    like()
+                    const pubLike = await like(props.id, "Publication", props.isLoggedIn)
+                    setpubLikesCount(pubLike.likes)
+                    setLikes(await getLikes())
                 }}></i>
                 <i className="fa-solid fa-comment" title="Comment" onClick={() => {
                     if (!props.isLoggedIn) {
@@ -52,7 +39,7 @@ export default function Engagement(props) {
                     }
                     setShowCommentFormOnOff(true)
                 }}></i>
-                <p>Likes: {pubLikesCount}</p>
+                {liked && <p className="liked">{pubLikesCount} <i className="fa-solid fa-thumbs-up"></i></p>}
                 {message && <p id="message">{message}</p>}
             </div>
 

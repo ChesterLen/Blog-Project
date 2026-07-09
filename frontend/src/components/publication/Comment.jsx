@@ -1,6 +1,7 @@
 import React from "react"
 import defaultProfileImage from "../../assets/ChatGPT Image Jun 21, 2026, 02_52_22 PM.png"
 import { Form } from "react-router"
+import { like, getLikes } from "../../utils"
 
 export default function Comment(props) {
     const [showReplyFormOnOff, setShowReplyFormOnOff] = React.useState({})
@@ -12,6 +13,10 @@ export default function Comment(props) {
     const profiles = props.profiles
     const replies = props.replies
     const isLoggedIn = props.isLoggedIn
+
+    const [cmtLikesCount, setCmtLikesCount] = React.useState(comment.likes)
+    const [likes, setLikes] = React.useState(props.likes)
+    const liked = likes.find(l => l.profile_liker === Number(isLoggedIn) && l.comment === comment.id)
 
     const replyForm = <div className="comment-form">
         <Form onSubmit={() => setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: false }))} method="post">
@@ -34,7 +39,11 @@ export default function Comment(props) {
             </div>
             <div className="cmt-engagement">
                 <div className="engagement-icons">
-                    <i className="fa-regular fa-thumbs-up"></i>
+                    <i className={`${liked ? "fa-solid" : "fa-regular"} fa-thumbs-up`} onClick={async () => {
+                        const cmtLike = await like(comment.id, "Comment", isLoggedIn)
+                        setCmtLikesCount(cmtLike.likes)
+                        setLikes(await getLikes())
+                    }}></i>
                     <i className="fa-solid fa-reply" title="Reply" onClick={() => {
                         if (!isLoggedIn) {
                             setMessage("You need to be logged in")
@@ -42,6 +51,7 @@ export default function Comment(props) {
                         }
                         setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: true }))
                     }}></i>
+                    {liked && <p className="liked">{cmtLikesCount} <i className="fa-solid fa-thumbs-up"></i></p>}
                 </div>
                 {showReplyFormOnOff[comment.id] && replyForm}
                 <div className="replies">
@@ -57,6 +67,7 @@ export default function Comment(props) {
                                     profiles={profiles}
                                     replies={replies}
                                     isLoggedIn={isLoggedIn}
+                                    likes={likes}
                                 />
                             )
                         }) :

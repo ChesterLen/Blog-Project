@@ -57,6 +57,21 @@ export async function getReplies() {
     return data
 }
 
+export async function like(id, className, profileLiker) {
+    const res = await fetch("http://localhost:8000/api/like/", {
+        method: "post",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie()
+        },
+        body: JSON.stringify({ id: id, "className": className, "profileId": profileLiker })
+    })
+
+    const data = await res.json()   
+    return data
+}
+
 export async function getLikes() {
     const res = await fetch("http://localhost:8000/api/likes")
     const data = await res.json()

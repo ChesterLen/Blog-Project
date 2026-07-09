@@ -65,3 +65,7 @@
     height: 30px;
     border-radius: 50%;
 }
+
+.liked {
+    margin-left: auto;
+}

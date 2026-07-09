@@ -64,6 +64,7 @@ export default function PublicationDetail() {
         profiles={profiles}
         replies={repliesState}
         isLoggedIn={isLoggedIn}
+        likes={likes}
       />
     )
   })
