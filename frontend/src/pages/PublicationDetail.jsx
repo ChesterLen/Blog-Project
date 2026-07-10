@@ -8,25 +8,58 @@ import defaultProfileImage from "../assets/ChatGPT Image Jun 21, 2026, 02_52_22 
 
 export async function action({ request }) {
   const formData = await request.formData()
+
   const comment = formData.get("comment")
   const publication = formData.get("id")
   const parent = formData.get("parent")
-
   const profileLoggedIn = await getLoggedInProfile()
   const author = profileLoggedIn.profile_logged_in
 
-  const res = await fetch("http://localhost:8000/api/comment/create/", {
-    method: "post",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": getCookie()
-    },
-    body: JSON.stringify({ comment, publication, author, parent })
-  })
+  const cmtEdit = formData.get("cmt-edit")
+  const cmtId = formData.get("cmt-id")
 
-  const data = await res.json()
-  
+  if (cmtEdit && cmtId) {
+    const res = await fetch(`http://localhost:8000/api/comment/edit/${cmtId}/`, {
+      method: "put",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie(),
+      },
+      body: JSON.stringify({comment: cmtEdit})
+    })
+
+    const data = await res.json()
+  }
+
+  const cmtDel = formData.get("cmt-del")
+
+  if (cmtDel) {
+    const res = await fetch(`http://localhost:8000/api/comment/delete/${cmtDel}/`, {
+      method: "delete",
+      credentials: "include",
+      headers: {
+        "X-CSRFToken": getCookie(),
+      },
+    })
+
+    const data = await res.json()
+  }
+
+  if (comment && publication && author) {
+    const res = await fetch("http://localhost:8000/api/comment/create/", {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie()
+      },
+      body: JSON.stringify({ comment, publication, author, parent })
+    })
+
+    const data = await res.json()
+  }
+
   return null
 }
 

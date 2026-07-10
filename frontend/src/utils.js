@@ -68,7 +68,7 @@ export async function like(id, className, profileLiker) {
         body: JSON.stringify({ id: id, "className": className, "profileId": profileLiker })
     })
 
-    const data = await res.json()   
+    const data = await res.json()
     return data
 }
 

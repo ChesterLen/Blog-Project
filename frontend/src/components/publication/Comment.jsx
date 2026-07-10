@@ -18,6 +18,27 @@ export default function Comment(props) {
     const [likes, setLikes] = React.useState(props.likes)
     const liked = likes.find(l => l.profile_liker === Number(isLoggedIn) && l.comment === comment.id)
 
+    const [cmtMngMenu, setCmtMngMenu] = React.useState(false)
+    const [showEditForm, setShowEditForm] = React.useState(false)
+    const [commentState, setCommentState] = React.useState(comment.comment)
+
+    const cmtManageDropdownMenu = <div className="cmt-mng-drpd-mn">
+        <button id={comment.id} onClick={() => setShowEditForm(!showEditForm)}>Edit</button>
+        <Form method="post">
+            <input type="hidden" name="cmt-del" id="cmt-del" value={comment.id} />
+            <button>Delete</button>
+        </Form>
+    </div>
+
+    const cmtEditForm = <Form onSubmit={() => {
+        setShowEditForm(false)
+        setCmtMngMenu(false)
+    }} method="post">
+        <input type="text" name="cmt-edit" id="cmt-edit" defaultValue={commentState} onChange={(e) => setCommentState(e.target.value)} />
+        <input type="hidden" name="cmt-id" id="cmt-id" value={comment.id} />
+        <button>Edit</button>
+    </Form>
+
     const replyForm = <div className="comment-form">
         <Form onSubmit={() => setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: false }))} method="post">
             <input type="text" name="comment" id="comment" autoComplete="off" />
@@ -34,12 +55,24 @@ export default function Comment(props) {
                 <img src={profile.profile_image ? profile.profile_image : defaultProfileImage} className="cmt-prf-img" alt="Author's profile image" />
                 <div className="cmt-prof-data">
                     <p>{profile.first_name} {profile.last_name}</p>
-                    <p>{comment.comment}</p>
+                    {showEditForm ? cmtEditForm : <p>{comment.comment}</p>}
                 </div>
+
+                {
+                    Number(isLoggedIn) === profile.id &&
+                    <div className="cmt-mng">
+                        <button className="cmt-mng-btn" onClick={() => setCmtMngMenu(!cmtMngMenu)}><i className="fa-solid fa-ellipsis"></i></button>
+                        {cmtMngMenu && cmtManageDropdownMenu}
+                    </div>
+                }
             </div>
             <div className="cmt-engagement">
                 <div className="engagement-icons">
                     <i className={`${liked ? "fa-solid" : "fa-regular"} fa-thumbs-up`} onClick={async () => {
+                        if (!isLoggedIn) {
+                            setMessage("You need to be logged in")
+                            return
+                        }
                         const cmtLike = await like(comment.id, "Comment", isLoggedIn)
                         setCmtLikesCount(cmtLike.likes)
                         setLikes(await getLikes())
@@ -51,7 +84,8 @@ export default function Comment(props) {
                         }
                         setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: true }))
                     }}></i>
-                    {liked && <p className="liked">{cmtLikesCount} <i className="fa-solid fa-thumbs-up"></i></p>}
+                    {cmtLikesCount > 0 && <p className="liked">{cmtLikesCount} <i className="fa-solid fa-thumbs-up"></i></p>}
+                    {message && <p id="message">{message}</p>}
                 </div>
                 {showReplyFormOnOff[comment.id] && replyForm}
                 <div className="replies">
