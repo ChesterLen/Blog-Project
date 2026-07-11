@@ -14,7 +14,7 @@ export default function Engagement(props) {
         <Form onSubmit={() => setShowCommentFormOnOff(false)} method="post">
             <input type="text" name="comment" id="comment" autoComplete="off" />
             <input type="hidden" name="id" id="id" value={props.id} />
-            <button>Comment</button>
+            <button className="cmt-btn">Comment</button>
         </Form>
         <button className="cancel-btn" onClick={() => setShowCommentFormOnOff(false)}><i className="fa-solid fa-x"></i></button>
     </div>

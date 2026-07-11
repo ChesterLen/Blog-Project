@@ -23,20 +23,27 @@ export default function Comment(props) {
     const [commentState, setCommentState] = React.useState(comment.comment)
 
     const cmtManageDropdownMenu = <div className="cmt-mng-drpd-mn">
-        <button id={comment.id} onClick={() => setShowEditForm(!showEditForm)}>Edit</button>
+        <button id={comment.id} onClick={() => {
+            setShowEditForm(!showEditForm)
+            setCmtMngMenu(false)
+        }}>Edit</button>
         <Form method="post">
             <input type="hidden" name="cmt-del" id="cmt-del" value={comment.id} />
             <button>Delete</button>
         </Form>
     </div>
 
-    const cmtEditForm = <Form onSubmit={() => {
+    const cmtEditForm = <Form className="cmt-edit-form" onSubmit={() => {
         setShowEditForm(false)
         setCmtMngMenu(false)
     }} method="post">
-        <input type="text" name="cmt-edit" id="cmt-edit" defaultValue={commentState} onChange={(e) => setCommentState(e.target.value)} />
+        <input type="text" name="cmt-edit" id="cmt-edit" defaultValue={commentState} autoComplete="off" onChange={(e) => setCommentState(e.target.value)} />
         <input type="hidden" name="cmt-id" id="cmt-id" value={comment.id} />
-        <button>Edit</button>
+        <button className="cmt-edit-btn">Edit</button>
+        <i className="fa-solid fa-x cancel-btn" onClick={() => {
+            setCmtMngMenu(false)
+            setShowEditForm(false)
+        }}></i>
     </Form>
 
     const replyForm = <div className="comment-form">
@@ -44,7 +51,7 @@ export default function Comment(props) {
             <input type="text" name="comment" id="comment" autoComplete="off" />
             <input type="hidden" name="id" id="id" value={id} />
             <input type="hidden" name="parent" id="parent" value={comment.id} />
-            <button>Comment</button>
+            <button className="cmt-btn">Comment</button>
         </Form>
         <button className="cancel-btn" onClick={() => setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: false }))}><i className="fa-solid fa-x"></i></button>
     </div>
@@ -61,7 +68,11 @@ export default function Comment(props) {
                 {
                     Number(isLoggedIn) === profile.id &&
                     <div className="cmt-mng">
-                        <button className="cmt-mng-btn" onClick={() => setCmtMngMenu(!cmtMngMenu)}><i className="fa-solid fa-ellipsis"></i></button>
+                        <button className="cmt-mng-btn" onClick={() => {
+                            setCmtMngMenu(!cmtMngMenu)
+                            setShowEditForm(false)
+                            setCommentState(comment.comment)
+                        }}><i className="fa-solid fa-ellipsis"></i></button>
                         {cmtMngMenu && cmtManageDropdownMenu}
                     </div>
                 }

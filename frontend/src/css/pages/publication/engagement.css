@@ -17,8 +17,26 @@
     gap: .3em;
 }
 
-.comment-form button {
+.comment-form input {
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.comment-form .cmt-btn {
+    font-family: Inter, sans-serif;
+    color: #e3e3e3;
+    background-color: rgba(10, 10, 10, 100%);
+    text-align: left;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+    border: 1px solid #868686;
+    padding: 0 .2em;
+    transition: .2s ease-in-out;
+}
+
+.comment-form .cmt-btn:hover {
+    border: 1px solid #e3e3e3;
 }
 
 .cancel-btn {
@@ -26,6 +44,7 @@
     background: none;
     border: none;
     padding-top: .2em;
+    cursor: pointer;
 }
 
 .engagement-icons {
@@ -72,15 +91,6 @@
     display: flex;
 }
 
-.cmt-mng-drpd-mn {
-    position: absolute;
-    right: -.7%;
-    bottom: -100%;
-    display: flex;
-    flex-direction: column;
-    gap: .2em;
-}
-
 .cmt-mng-btn {
     background: none;
     border: none;
@@ -92,6 +102,63 @@
 .cmt-mng-btn .fa-ellipsis {
     color: #e3e3e3;
     font-size: 17px;
+}
+
+.cmt-mng-drpd-mn {
+    position: absolute;
+    right: -1.4%;
+    bottom: -135%;
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+}
+
+.cmt-mng-drpd-mn button {
+    font-family: Inter, sans-serif;
+    color: #e3e3e3;
+    background-color: rgba(10, 10, 10, 100%);
+    text-align: left;
+    border: 1px solid #868686;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: .3em;
+    transition: .2s ease-in-out;
+}
+
+.cmt-mng-drpd-mn button:hover {
+    border: 1px solid #e3e3e3;
+}
+
+.cmt-edit-form {
+    display: flex;
+    align-items: baseline;
+    gap: .3em;
+}
+
+.cmt-edit-form input {
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.cmt-edit-btn {
+    font-family: Inter, sans-serif;
+    color: #e3e3e3;
+    background-color: rgba(10, 10, 10, 100%);
+    text-align: left;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #868686;
+    padding: 0 .2em;
+    transition: .2s ease-in-out;
+}
+
+.cmt-edit-form .cancel-btn {
+    font-size: 13px;
+}
+
+.cmt-edit-btn:hover {
+    border: 1px solid #e3e3e3;
 }
 
 .liked {
