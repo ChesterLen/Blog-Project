@@ -12,7 +12,7 @@ export default function Engagement(props) {
 
     const commentForm = <div className="comment-form">
         <Form onSubmit={() => setShowCommentFormOnOff(false)} method="post">
-            <input type="text" name="comment" id="comment" autoComplete="off" />
+            <textarea type="text" name="comment" id="comment" autoComplete="off" />
             <input type="hidden" name="id" id="id" value={props.id} />
             <button className="cmt-btn">Comment</button>
         </Form>

@@ -80,6 +80,7 @@ export default function PublicationDetail() {
 
   const [commentsState, setCommentsState] = React.useState(comments)
   const [repliesState, setRepliesState] = React.useState(replies)
+  const [likesState, setLikesState] = React.useState(likes)
 
   React.useEffect(() => {
     setCommentsState(comments)
@@ -88,6 +89,7 @@ export default function PublicationDetail() {
 
   const renderComments = commentsState.filter(comment => comment.publication === publication.id).map(comment => {
     const profile = profiles.find(profile => profile.id === comment.author)
+    const commentLikes = likesState.filter(l => l.comment === comment.id)
     return (
       <Comment
         key={comment.id}
@@ -97,7 +99,7 @@ export default function PublicationDetail() {
         profiles={profiles}
         replies={repliesState}
         isLoggedIn={isLoggedIn}
-        likes={likes}
+        likes={commentLikes}
       />
     )
   })
@@ -110,6 +112,7 @@ export default function PublicationDetail() {
     <Publication
       key={publication.id}
       id={publication.id}
+      profileId={publicationProfile.id}
       profileImg={publicationProfile?.profile_image || defaultProfileImage}
       firstName={publicationProfile?.first_name}
       lastName={publicationProfile?.last_name}

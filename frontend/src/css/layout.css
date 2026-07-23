@@ -12,10 +12,10 @@
     grid-template-rows: auto auto;
 }
 
-.error {
-    color: red;
+.success-message {
+    color: rgb(22, 207, 22);
 }
 
-.message {
-    color: rgb(22, 207, 22);
+.error-message {
+    color: red;
 }

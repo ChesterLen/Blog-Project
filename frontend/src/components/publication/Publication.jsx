@@ -9,14 +9,14 @@ export default function Publication(props) {
     return (
         <div className="publication">
             <div className="inner-p-container">
-                <div className="profile">
+                <Link to={`../profile/details/${props.profileId}`} className="profile">
                     <div className="profile-content">
                         <div className="prf-img">
                             <img src={props.profileImg} alt="Publication profile image" />
                         </div>
                         <p>{props.firstName} {props.lastName}</p>
                     </div>
-                </div>
+                </Link>
 
                 {pathName === "/publications" ?
                     <div className="inner-eng-container">

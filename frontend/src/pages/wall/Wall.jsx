@@ -24,7 +24,6 @@ export async function action({ request }) {
     })
 
     const data = await res.json()
-    console.log(data)
     return data
 }
 
@@ -53,6 +52,7 @@ export default function Publications() {
             <Publication
                 key={publication.id}
                 id={publication.id}
+                profileId={profile.id}
                 profileImg={profile.profile_image ? profile.profile_image : defaultProfileImage}
                 firstName={profile.first_name}
                 lastName={profile.last_name}

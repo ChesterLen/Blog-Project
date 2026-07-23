@@ -3,20 +3,13 @@ import defaultProfileImage from "../../assets/ChatGPT Image Jun 21, 2026, 02_52_
 import { Form } from "react-router"
 import { like, getLikes } from "../../utils"
 
-export default function Comment(props) {
+export default function Comment({ id, comment, profile, profiles, replies, isLoggedIn, likes }) {
     const [showReplyFormOnOff, setShowReplyFormOnOff] = React.useState({})
     const [message, setMessage] = React.useState("")
 
-    const id = props.id
-    const comment = props.comment
-    const profile = props.profile
-    const profiles = props.profiles
-    const replies = props.replies
-    const isLoggedIn = props.isLoggedIn
-
     const [cmtLikesCount, setCmtLikesCount] = React.useState(comment.likes)
-    const [likes, setLikes] = React.useState(props.likes)
-    const liked = likes.find(l => l.profile_liker === Number(isLoggedIn) && l.comment === comment.id)
+    const [likesState, setLikesState] = React.useState(likes)
+    const liked = likesState.find(l => l.profile_liker === Number(isLoggedIn) && l.comment === comment.id)
 
     const [cmtMngMenu, setCmtMngMenu] = React.useState(false)
     const [showEditForm, setShowEditForm] = React.useState(false)
@@ -37,7 +30,7 @@ export default function Comment(props) {
         setShowEditForm(false)
         setCmtMngMenu(false)
     }} method="post">
-        <input type="text" name="cmt-edit" id="cmt-edit" defaultValue={commentState} autoComplete="off" onChange={(e) => setCommentState(e.target.value)} />
+        <textarea type="text" name="cmt-edit" id="cmt-edit" defaultValue={commentState} autoComplete="off" onChange={(e) => setCommentState(e.target.value)} />
         <input type="hidden" name="cmt-id" id="cmt-id" value={comment.id} />
         <button className="cmt-edit-btn">Edit</button>
         <i className="fa-solid fa-x cancel-btn" onClick={() => {
@@ -48,7 +41,7 @@ export default function Comment(props) {
 
     const replyForm = <div className="comment-form">
         <Form onSubmit={() => setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: false }))} method="post">
-            <input type="text" name="comment" id="comment" autoComplete="off" />
+            <textarea type="text" name="comment" id="comment" autoComplete="off" />
             <input type="hidden" name="id" id="id" value={id} />
             <input type="hidden" name="parent" id="parent" value={comment.id} />
             <button className="cmt-btn">Comment</button>
@@ -85,8 +78,9 @@ export default function Comment(props) {
                             return
                         }
                         const cmtLike = await like(comment.id, "Comment", isLoggedIn)
+                        const cmtLikeJSON = JSON.parse(cmtLike.like)[0]
                         setCmtLikesCount(cmtLike.likes)
-                        setLikes(await getLikes())
+                        setLikesState(prev => prev.some(l => l.id === cmtLikeJSON.pk) ? prev.filter(l => l.id !== cmtLikeJSON.pk) : [...prev, {id: cmtLikeJSON.pk, ...cmtLikeJSON.fields}])
                     }}></i>
                     <i className="fa-solid fa-reply" title="Reply" onClick={() => {
                         if (!isLoggedIn) {
@@ -96,13 +90,13 @@ export default function Comment(props) {
                         setShowReplyFormOnOff(prev => ({ ...prev, [comment.id]: true }))
                     }}></i>
                     {cmtLikesCount > 0 && <p className="liked">{cmtLikesCount} <i className="fa-solid fa-thumbs-up"></i></p>}
-                    {message && <p id="message">{message}</p>}
+                    {message && <p className="error-message">{message}</p>}
                 </div>
                 {showReplyFormOnOff[comment.id] && replyForm}
                 <div className="replies">
                     {
                         replies ? replies.filter(reply => reply.parent === comment.id).map(reply => {
-                            const rplProfile = props.profiles.find(profile => profile.id === reply.author)
+                            const rplProfile = profiles.find(profile => profile.id === reply.author)
                             return (
                                 <Comment
                                     key={reply.id}

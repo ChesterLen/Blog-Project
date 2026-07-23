@@ -52,8 +52,8 @@ export default function Login() {
     return (
         <div className="login-container">
             <h1>Login</h1>
-            {actionData && <p className="error">{actionData.toString()}</p>}
-            {accActivatedMessage && <p className="message">{accActivatedMessage}</p>}
+            {actionData && <p className="error-message">{actionData.toString()}</p>}
+            {accActivatedMessage && <p className="success-message">{accActivatedMessage}</p>}
             <Form onSubmit={(e) => e.preventDefault} method="post">
                 <label htmlFor="email">Email:</label>
                 <input type="email" name="email" id="email" required />

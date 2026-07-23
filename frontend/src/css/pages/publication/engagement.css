@@ -125,6 +125,10 @@
     transition: .2s ease-in-out;
 }
 
+.cmt-mng-drpd-mn form button {
+    cursor: pointer;
+}
+
 .cmt-mng-drpd-mn button:hover {
     border: 1px solid #e3e3e3;
 }

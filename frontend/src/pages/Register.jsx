@@ -49,7 +49,7 @@ export async function action({ request }) {
         }
     }
 
-    return "Account created. Check your email."
+    return {created: "Account created. Check your email."}
 }
 
 export default function Register() {
@@ -58,7 +58,7 @@ export default function Register() {
     return (
         <div className="register-container">
             <h1>Register</h1>
-            {actionData && <p className="message">{actionData}</p>}
+            {actionData?.created ? <p className="success-message">{actionData.created}</p> : <p className="error-message">{actionData}</p>}
             <Form onSubmit={(e) => e.preventDefault} method="post">
                 <label htmlFor="email">Email:</label>
                 <input type="email" name="email" id="email" required />
